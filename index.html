@@ -39,9 +39,45 @@
     </header>
 
     <main class="main">
-      <section class="weather-today">TODAY</section>
-      <section class="weather-next-days">NEXT 3 DAYS</section>
-      <section class="user-location">I'm HERE</section>
+        <div class="weather-city-information">
+      <div class="city-time">
+        <h1>MINSK, BELARUS</h1>
+        <h2>Mon 28 October 17:23</h2>
+      </div>
+      <section class="weather-today">
+        <div class="weather-today__temperature_number">10°</div>
+        <ul class="weather-today__description">
+          <li class="weather-today_summury">OVERCAST</li>
+          <li class="weather-today_feel">FEELS LIKE: 7°</li>
+          <li class="weather-today_wind">WIND: 2 m/s</li>
+          <li class="weather-today_humidity">HUMIDITY: 83%</li>
+        </ul>
+      </section>
+      <section class="weather-next-days">
+        <div class="weather-next-days__first">
+            <div class="weather-next-days__first_name-day">Monday</div>
+            <div class="weather-next-days__first_temperature_number">7</div>
+            <div class="weather-next-days__first_icons">&&&&</div>
+        </div>
+        <div class="weather-next-days__second">
+            <div class="weather-next-days__second_name-day">Tuesday</div>
+            <div class="weather-next-days__second_temperature_number">8</div>
+            <div class="weather-next-days__second_icons">&&&&</div>
+        </div>
+        <div class="weather-next-days__third">
+            <div class="weather-next-days__third_name-day">Wednesday</div>
+            <div class="weather-next-days__third_temperature_number">9</div>
+            <div class="weather-next-days__third_icons">&&&&</div>
+        </div>
+      </section>
+    </div>
+      <section class="user-location">
+          <div class="user-location__geolocation">hehe</div>
+          <div class="user-location__coordinates">
+              <p class="latitude">54</p>
+              <p class="longitude">55</p>
+          </div>
+      </section>
     </main>
   </body>
   <script src="./js/main.js"></script>
