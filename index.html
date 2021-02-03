@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Fansy weather</title>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="menu">
+        <div class="refresh-button"></div>
+        <div class="dropdown">
+          <button onclick="myFunction()" class="dropbtn">EN</button>
+          <div id="myDropdown" class="dropdown-content">
+            <a href="#">EN</a>
+            <a href="#">RU</a>
+          </div>
+        </div>
+        <div class="temperature-buttons">
+          <button type="checkbox" class="celsius-button">°C</button>
+          <button type="checkbox" class="fahrenheit-button">°F</button>
+        </div>
+      </nav>
+
+      <form action="" method="get" class="search-form">
+        <input
+          class="search-field"
+          name="search"
+          placeholder="Search city"
+          type="search"
+        />
+        <button type="submit" class="search-button">SEARCH</button>
+      </form>
+    </header>
+
+    <main class="main">
+      <section class="weather-today">TODAY</section>
+      <section class="weather-next-days">NEXT 3 DAYS</section>
+      <section class="user-location">I'm HERE</section>
+    </main>
+  </body>
+  <script src="./js/main.js"></script>
+</html>
