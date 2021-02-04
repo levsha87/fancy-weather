@@ -7,10 +7,7 @@
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
     />
-    <link
-      rel="stylesheet"
-      href="./font.css"
-    />
+    <link rel="stylesheet" href="./font.css" />
     <link rel="stylesheet" href="./style.css" />
     <title>Fansy weather</title>
   </head>
@@ -46,10 +43,12 @@
       <div class="weather-city-information">
         <div class="city-time">
           <h1>MINSK, BELARUS</h1>
-          <h2>Mon 28 October 17:23</h2>
+          <h3>Mon 28 October 17:23</h3>
         </div>
         <section class="weather-today">
-          <div class="weather-today__temperature_number">10°</div>
+          <div class="weather-today__temperature_number">
+            10<span class="weather-today__temperature_sign-degree">°</span>
+          </div>
           <ul class="weather-today__description">
             <li class="weather-today_summury">OVERCAST</li>
             <li class="weather-today_feel">FEELS LIKE: 7°</li>
@@ -58,20 +57,52 @@
           </ul>
         </section>
         <section class="weather-next-days">
-          <div class="weather-next-days__first">
-            <div class="weather-next-days__first_name-day">Monday</div>
-            <div class="weather-next-days__first_temperature_number">7</div>
-            <div class="weather-next-days__first_icons">&&&&</div>
+          <div class="weather-next-days__first weather-next-days_item">
+            <div
+              class="weather-next-days__first_name-day weather-next-days_name-day"
+            >
+              Monday
+            </div>
+            <div
+              class="weather-next-days__first_temperature_number weather-next-days_temperature_number"
+            >
+              7
+            </div>
+            <div class="weather-next-days__first_icons weather-next-days_icons">
+              &&
+            </div>
           </div>
-          <div class="weather-next-days__second">
-            <div class="weather-next-days__second_name-day">Tuesday</div>
-            <div class="weather-next-days__second_temperature_number">8</div>
-            <div class="weather-next-days__second_icons">&&&&</div>
+          <div class="weather-next-days__second weather-next-days_item">
+            <div
+              class="weather-next-days__second_name-day weather-next-days_name-day"
+            >
+              Tuesday
+            </div>
+            <div
+              class="weather-next-days__second_temperature_number weather-next-days_temperature_number"
+            >
+              8
+            </div>
+            <div
+              class="weather-next-days__second_icons weather-next-days_icons"
+            >
+              &&
+            </div>
           </div>
-          <div class="weather-next-days__third">
-            <div class="weather-next-days__third_name-day">Wednesday</div>
-            <div class="weather-next-days__third_temperature_number">9</div>
-            <div class="weather-next-days__third_icons">&&&&</div>
+          <div class="weather-next-days__third weather-next-days_item">
+            <div
+              class="weather-next-days__third_name-day weather-next-days_name-day"
+            >
+              Wednesday
+            </div>
+            <div
+              class="weather-next-days__third_temperature_number weather-next-days_temperature_number"
+            >
+              9
+            </div>
+            <div class="weather-next-days__third_icons weather-next-days_icons">
+              &&
+            </div>
           </div>
         </section>
       </div>

@@ -12,3 +12,8 @@
     font-family: Montserrat-Bold; /* Имя шрифта */
     src: url(./assets/fonts/Montserrat-Bold.ttf); /* Путь к файлу со шрифтом */
    }
+
+   @font-face {
+    font-family: Montserrat-SemiBold; /* Имя шрифта */
+    src: url(./assets/fonts/Montserrat-SemiBold.ttf); /* Путь к файлу со шрифтом */
+   }
