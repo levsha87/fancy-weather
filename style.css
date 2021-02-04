@@ -216,7 +216,7 @@ main > * {
 }
 /*--------------------------------description weather today and three next day------------------------*/
 .weather-city-information {
-  flex-basis: 50%;
+  flex-basis: 55%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -236,33 +236,42 @@ main > * {
 .weather-today__temperature_number {
   font-size: 300px;
   font-family: Montserrat-Bold;
-  position: relative;
+  display: flex;
 }
 
 .weather-today__temperature_sign-degree {
+  display: block;
   font-size: 100px;
-  position: absolute;
-  top: 20px;
+  padding-top: 10%;
 }
 
 .weather-today__description {
   display: flex;
   flex-direction: column;
-  line-height: 1.5;
-  padding-top: 20%;
+  line-height: 2;
   font-family: Montserrat-Bold;
+  font-size: 22px;
+  padding-top: 75px;
+   
 }
+
+.weather-today__description >* {
+  display: block;
+}
+
 
 .weather-next-days {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
+
 .weather-next-days_item {
   flex-basis: 25%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  position: relative;
 }
 
 .weather-next-days_name-day {
@@ -273,8 +282,25 @@ main > * {
 .weather-next-days_temperature_number {
   font-family: Montserrat-SemiBold;
   font-size: 70px;
+  display: flex;
 }
 
-/* .weather-next-days_icons {
-  
-} */
+.weather-next-days_sign-degree {
+  display: block;
+  font-size: 40px;
+}
+
+.weather-next-days_icons {
+  width: 50%;
+} 
+
+.weather-next-days_temperature_number {
+  z-index: 10;
+}
+
+.weather-next-days_icons{
+  position: absolute;
+  top: 5px;
+  left: 30px;
+  z-index: 1;
+}
