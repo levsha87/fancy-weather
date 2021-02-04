@@ -8,6 +8,14 @@
     box-sizing: border-box;
 }
 
+html {
+    background: url(./images/winter-background-defoult.jpg) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+}
+
 body {
     max-width: 1020px;
     margin: 0 auto;
@@ -172,7 +180,7 @@ body {
 .search-button {
   position: absolute; 
   top: 0;
-  right: 5px;
+  right: 0;
   width: 92px;
   height: 32px;
   border: none;
@@ -197,5 +205,6 @@ body {
     width: 100%;
     justify-content: space-between;
     align-items: center;
+    color: white;
 }
 
