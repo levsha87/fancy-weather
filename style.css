@@ -8,13 +8,13 @@
     box-sizing: border-box;
 }
 
-html {
+/* html {
     background: url(./images/winter-background-defoult.jpg) no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
-}
+} */ 
 
 body {
     max-width: 1020px;
@@ -205,6 +205,35 @@ body {
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    color: white;
+    /* color: white; */
 }
 
+main >* {
+    border: 1px solid black;
+}
+/*--------------------------------description weather today and three next day------------------------*/
+.weather-city-information {
+flex-basis: 50%;
+height: 100%;
+display: flex;
+flex-direction: column;
+}
+
+.weather-today {
+display: flex;
+justify-content: space-around;
+align-items: baseline;
+}
+
+
+ 
+.weather-next-days {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.weather-today__temperature_number {
+font-size: 250px;
+font-family: Montserrat-Bold;
+}
