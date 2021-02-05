@@ -94,32 +94,17 @@
         </section>
       </div>
       <section class="user-location">
-        <div class="user-location__geolocation"></div>
+        <div class="user-location__geolocation">
+        
+        </div>
         <div class="user-location__coordinates">
-          <p class="latitude">54</p>
-          <p class="longitude">55</p>
+          <span class="latitude">Latitude: 54</span><br>
+          <span class="longitude">Longitude: 55</span>
         </div>
       </section>
     </main>
   </body>
   <script src="./js/main.js"></script>
-  <script>
-    // Initialize and add the map
-    function initMap() {
-      // The location of Uluru
-      const uluru = { lat: 53.8962037, lng: 27.5504956 };
-      // The map, centered at Uluru
-      const map = new google.maps.Map(document.querySelector(".user-location__geolocation"), {
-        zoom: 7,
-        center: uluru,
-      });
-      // The marker, positioned at Uluru
-      const marker = new google.maps.Marker({
-        position: uluru,
-        map: map,
-      });
-    }
-  </script>
   <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCH9_QkQkSQ-z6j9J-yQJvYJ6dvvSQM3m8&callback=initMap">
 </script>

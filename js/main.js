@@ -18,3 +18,19 @@ window.onclick = function(event) {
     }
   }
 };
+
+  // Initialize and add the map
+ function initMap() {
+  // The location of Minsk
+  const minsk = { lat: 53.8962037, lng: 27.5504956 };
+  // The map, centered at minsk
+  const map = new google.maps.Map(document.querySelector(".user-location__geolocation"), {
+    zoom: 7,
+    center: minsk,
+  });
+  // The marker, positioned at minsk
+  const marker = new google.maps.Marker({
+    position: minsk,
+    map: map,
+  });
+}  
