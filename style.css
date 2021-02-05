@@ -313,3 +313,16 @@ body {
   left: 30px;
   z-index: -1;
 }
+
+.user-location {
+  flex-basis: 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.user-location__geolocation {
+  width: 60%;
+  height: 280px;
+  border-radius: 10% 10% 0 10%;
+}
