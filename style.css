@@ -248,7 +248,7 @@ body {
   position:absolute;
   width: 200px;
   right: -165px;
-  top: -70px;
+  top: -90px;
   z-index: -1;
 }
 
@@ -326,11 +326,14 @@ body {
   justify-content: space-between;
 }
 
+.user-location__geolocation_svg {
+width: 90%;
+}
+
 .user-location__geolocation {
-  width: 60%;
-  height: 260px;
-  border-radius: 10%;
-  position: relative;
+  width: 300px;
+  height: 300px;
+  margin-top: 50px;
 }
 
 .user-location__coordinates {
