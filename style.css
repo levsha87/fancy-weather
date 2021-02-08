@@ -326,11 +326,6 @@ body {
   justify-content: space-between;
 }
 
-.user-location__geolocation_svg {
-width: 90%;
-background: transparent;
-}
-
 .user-location__geolocation {
   width: 260px;
   height: 260px;
