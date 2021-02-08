@@ -328,18 +328,24 @@ body {
 
 .user-location__geolocation_svg {
 width: 90%;
+background: transparent;
 }
 
 .user-location__geolocation {
-  width: 300px;
-  height: 300px;
-  margin-top: 50px;
+  width: 260px;
+  height: 260px;
+  clip-path: polygon(100% 0, 100% 100%, 90% 90%, 13% 90%, 9% 90%, 6% 89%, 3% 86%, 1% 84%, 0 81%, 0 0);
+  border-radius: 10% 10% 0 10%;
+}
+
+/*----gmnoprint className buttons + and - on the google map------*/
+.gmnoprint {
+  display: none;
 }
 
 .user-location__coordinates {
   width: 60%;
   height: 40px;
-  margin-top: 15px;
   text-align: right;
   font-family: Montserrat-SemiBold;
   font-size: 14px;
