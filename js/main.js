@@ -30,13 +30,16 @@ function initMap() {
       center: minsk,
     }
   );
+  
   // The marker, positioned at minsk
   const marker = new google.maps.Marker({
     position: minsk,
     map: map,
   });
 }
+
 /*--------------------get current month, day, time---------------*/
+
 function getCurrentFullTime(month, dateToday, dayToday, timeNow) {
   let today = new Date();
   const arr = today.toString().split(' ');
@@ -65,3 +68,33 @@ function showCurrentTime(month, dateToday, dayToday, timeNow) {
 setInterval(() => {
   getCurrentFullTime();
 }, 1000);
+
+
+
+/*--------------------get geolocation--------------------*/
+
+async function getGeolocation() {
+  let response = await fetch('https://ipinfo.io/json?token=543fd5d393e868');
+  let data = await response.json();
+  await getCountryCode(data);
+  
+  console.log(data, data.city, data.country);
+}
+
+
+getGeolocation();
+
+async function getCountryCode(data) {
+  let names = await fetch('./names.json');
+  let countryCode = await names.json();
+  for(let key in countryCode) {
+    if(key === data.country) {
+      showCurrentCountryName (key, countryCode);
+    }
+  }
+}
+
+function showCurrentCountryName (key, countryCode) {
+  const countryNameElement = document.querySelector('.country-name');
+  countryNameElement.innerHTML = countryCode[key].toUpperCase();
+}
