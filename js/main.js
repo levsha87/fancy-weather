@@ -37,27 +37,31 @@ function initMap() {
   });
 }
 /*--------------------get current month, day, time---------------*/
-function getCurrentFullTime() {
+function getCurrentFullTime(month, dateToday, dayToday, timeNow) {
+  let today = new Date();
+  const arr = today.toString().split(' ');
+  arr.length = 5;
+
+  month = arr[1];
+  dateToday = arr[2];
+  dayToday = arr[0];
+  timeNow = arr[4];
+  
+  showCurrentTime(month, dateToday, dayToday, timeNow);
+}
+
+function showCurrentTime(month, dateToday, dayToday, timeNow) {
   const monthEl = document.querySelector('.month');
   const dateTodayEl = document.querySelector('.date-today');
   const dayTodayEl = document.querySelector('.day-today');
   const timeEl = document.querySelector('.time');
 
-  setInterval(() => {
-    let today = new Date();
-    const arr = today.toString().split(' ');
-    arr.length = 5;
-
-    let month = arr[1];
-    let dateToday = arr[2];
-    let dayToday = arr[0];
-    let timeNow = arr[4];
-
-    monthEl.innerHTML = month;
-    dateTodayEl.innerHTML = dateToday;
-    dayTodayEl.innerHTML = dayToday;
-    timeEl.innerHTML = timeNow;
-  }, 1000);
+  monthEl.innerHTML = month;
+  dateTodayEl.innerHTML = dateToday;
+  dayTodayEl.innerHTML = dayToday;
+  timeEl.innerHTML = timeNow;
 }
 
-getCurrentFullTime();
+setInterval(() => {
+  getCurrentFullTime();
+}, 1000);
