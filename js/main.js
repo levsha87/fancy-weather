@@ -77,7 +77,7 @@ async function getGeolocation() {
   let response = await fetch('https://ipinfo.io/json?token=543fd5d393e868');
   let data = await response.json();
   await getCountryCode(data);
-  
+  showCurrentCityName (data);
   console.log(data, data.city, data.country);
 }
 
@@ -97,4 +97,9 @@ async function getCountryCode(data) {
 function showCurrentCountryName (key, countryCode) {
   const countryNameElement = document.querySelector('.country-name');
   countryNameElement.innerHTML = countryCode[key].toUpperCase();
+}
+
+function showCurrentCityName (data) {
+  const cityNameElement = document.querySelector('.city-name');
+  cityNameElement.innerHTML = data.city.toUpperCase();
 }
