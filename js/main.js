@@ -99,6 +99,7 @@ function getCoordinateCurrentCityNavigator (){
     console.log(`Долгота: ${crd.longitude}`);
     console.log(`Плюс-минус ${crd.accuracy} метров.`);
 
+    initMap(latitudeCurrentCity, longitudeCurrentCity);
     getPlaceNameByCoordinate(latitudeCurrentCity, longitudeCurrentCity);
     getWeatherData(latitudeCurrentCity, longitudeCurrentCity);
   }
