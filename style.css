@@ -218,7 +218,7 @@ body {
 } */
 /*--------------------------------description of weather today and three next day------------------------*/
 .weather-city-information {
-  width: 55%;
+  width: 60%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -261,7 +261,7 @@ body {
   flex-direction: column;
   line-height: 2;
   font-family: Montserrat-Bold;
-  font-size: 22px;
+  font-size: 20px;
   padding-top: 75px;
    
 }
@@ -315,7 +315,7 @@ body {
 }
 
 .user-location {
-  width: 45%;
+  width: 40%;
   flex: 1;
   display: flex;
   flex-direction: column;

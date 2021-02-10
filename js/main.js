@@ -131,9 +131,65 @@ async function  getPlaceNameByCoordinate(latitudeCurrentCity, longitudeCurrentCi
 
 async function getWeatherData(latitudeCurrentCity, longitudeCurrentCity){
   
-  let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitudeCurrentCity.toString()}&lon=${longitudeCurrentCity.toString()}&appid=0f57bad2b641ca690297cce9e9f87665`;
+  let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitudeCurrentCity.toString()}&lon=${longitudeCurrentCity.toString()}&units=metric&appid=0f57bad2b641ca690297cce9e9f87665`;
   let responseWeatherData = await fetch(url);
   let weatherData = await responseWeatherData.json();
   
   console.log(weatherData);
+  showCurrentTemperature (weatherData);
+  showCurrentWeatherDescribe (weatherData);
+  
 }
+
+function showCurrentTemperature (weatherData){
+  let currentTemperature = document.querySelector('.weather-today__temperature_number_value');
+  currentTemperature.innerHTML = Math.trunc(weatherData.list[0].main.temp);
+} 
+
+function showCurrentWeatherDescribe (weatherData){
+  let summury = document.querySelector('.weather-today_summury');
+  let feel = document.querySelector('.weather-today_feel');
+  let wind = document.querySelector('.weather-today_wind');
+  let humidity = document.querySelector('.weather-today_humidity');
+  
+  summury.innerHTML = weatherData.list[0].weather[0].description;
+  feel.innerHTML = `FEELS LIKE: ${Math.trunc(weatherData.list[0].main.feels_like)}°`;
+  wind.innerHTML = `WIND: ${Math.trunc(weatherData.list[0].wind.speed)} m/s ${translateValueWindDirectionDegToCard(weatherData.list[0].wind.deg)}`;
+  humidity.innerHTML = `HUMIDITY: ${weatherData.list[0].main.humidity}%`;
+} 
+
+function translateValueWindDirectionDegToCard (deg){
+  if (deg>11.25 && deg<=33.75){
+    return "NNE";
+  }else if (deg>33.75 && deg<=56.25){
+    return "ENE";
+  }else if (deg>56.25 && deg<=78.75){
+    return "E";
+  }else if (deg>78.75 && deg<=101.25){
+    return "ESE";
+  }else if (deg>101.25 && deg<=123.75){
+    return "ESE";
+  }else if (deg>123.75 && deg<=146.25){
+    return "SE";
+  }else if (deg>146.25 && deg<=168.75){
+    return "SSE";
+  }else if (deg>168.75 && deg<=191.25){
+    return "S";
+  }else if (deg>191.25 && deg<=213.75){
+    return "SSW";
+  }else if (deg>213.75 && deg<=236.25){
+    return "SW";
+  }else if (deg>236.25 && deg<=258.75){
+    return "WSW";
+  }else if (deg>258.75 && deg<=281.25){
+    return "W";
+  }else if (deg>281.25 && deg<=303.75){
+    return "WNW";
+  }else if (deg>303.75 && deg<=326.25){
+    return "NW";
+  }else if (deg>326.25 && deg<=348.75){
+    return "NNW";
+  }else{
+    return "N"; 
+  }
+} 
