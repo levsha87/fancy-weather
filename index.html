@@ -42,13 +42,21 @@
     <main class="main">
       <div class="weather-city-information">
         <div class="city-time">
-          <h1><span class="city-name">MINSK</span>, <span class="country-name">SPAIN</span></h1>
-          <h3><span class="day-today">Mon</span> <span class="date-today">28</span> <span class="month">October</span> <span class="time">17:23:23</span></h3>
+          <h1>
+            <span class="city-name"></span>  <span class="country-name"></span>
+          </h1>
+          <h3>
+            <span class="day-today"></span> <span class="date-today"></span>
+            <span class="month"></span> <span class="time"></span>
+          </h3>
         </div>
         <section class="weather-today">
           <div class="weather-today__temperature_number">
             10<span class="weather-today__temperature_sign-degree">°</span>
-            <img src="./images/animation-ready/partly-cloudy-day-rain.svg" alt="icons">
+            <img
+              src="./images/animation-ready/partly-cloudy-day-rain.svg"
+              alt="icons"
+            />
           </div>
           <ul class="weather-today__description">
             <li class="weather-today_summury">OVERCAST</li>
@@ -59,45 +67,67 @@
         </section>
         <section class="weather-next-days">
           <div class="weather-next-days__first weather-next-days_item">
-            <div class="weather-next-days__first_name-day weather-next-days_name-day">           
-             Monday
+            <div
+              class="weather-next-days__first_name-day weather-next-days_name-day"
+            >
+              Monday
             </div>
-            <div class="weather-next-days__first_temperature_number weather-next-days_temperature_number">
+            <div
+              class="weather-next-days__first_temperature_number weather-next-days_temperature_number"
+            >
               7<span class="weather-next-days_sign-degree">°</span>
             </div>
             <div class="weather-next-days__first_icons weather-next-days_icons">
-              <img src="./images/animation-ready/partly-cloudy-day-rain.svg" alt="icons">
+              <img
+                src="./images/animation-ready/partly-cloudy-day-rain.svg"
+                alt="icons"
+              />
             </div>
           </div>
           <div class="weather-next-days__second weather-next-days_item">
-            <div class="weather-next-days__second_name-day weather-next-days_name-day">
+            <div
+              class="weather-next-days__second_name-day weather-next-days_name-day"
+            >
               Tuesday
             </div>
-            <div class="weather-next-days__second_temperature_number weather-next-days_temperature_number">
+            <div
+              class="weather-next-days__second_temperature_number weather-next-days_temperature_number"
+            >
               8<span class="weather-next-days_sign-degree">°</span>
             </div>
-            <div class="weather-next-days__second_icons weather-next-days_icons">
-              <img src="./images/animation-ready/partly-cloudy-day-rain.svg" alt="icons">
+            <div
+              class="weather-next-days__second_icons weather-next-days_icons"
+            >
+              <img
+                src="./images/animation-ready/partly-cloudy-day-rain.svg"
+                alt="icons"
+              />
             </div>
           </div>
           <div class="weather-next-days__third weather-next-days_item">
-            <div class="weather-next-days__third_name-day weather-next-days_name-day">
+            <div
+              class="weather-next-days__third_name-day weather-next-days_name-day"
+            >
               Wednesday
             </div>
-            <div class="weather-next-days__third_temperature_number weather-next-days_temperature_number">
+            <div
+              class="weather-next-days__third_temperature_number weather-next-days_temperature_number"
+            >
               9<span class="weather-next-days_sign-degree">°</span>
             </div>
             <div class="weather-next-days__third_icons weather-next-days_icons">
-              <img src="./images/animation-ready/partly-cloudy-day-rain.svg" alt="icons">
+              <img
+                src="./images/animation-ready/partly-cloudy-day-rain.svg"
+                alt="icons"
+              />
             </div>
           </div>
         </section>
       </div>
       <section class="user-location">
-            <div class="user-location__geolocation">
-            </div>
+        <div class="user-location__geolocation"></div>
         <div class="user-location__coordinates">
-          <span class="latitude">Latitude: 54</span><br>
+          <span class="latitude">Latitude: 54</span><br />
           <span class="longitude">Longitude: 55</span>
         </div>
       </section>
@@ -105,7 +135,9 @@
   </body>
   <script src="./js/main.js"></script>
   <script type="text/javascript" src="names.json"></script>
-  <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCH9_QkQkSQ-z6j9J-yQJvYJ6dvvSQM3m8&callback=initMap">
-</script>
+  <script
+    async
+    defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCH9_QkQkSQ-z6j9J-yQJvYJ6dvvSQM3m8&callback=initMap"
+  ></script>
 </html>

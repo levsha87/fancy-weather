@@ -19,21 +19,21 @@ window.onclick = function (event) {
 };
 
 // Initialize and add the map
-function initMap() {
+function initMap(latitudeCurrentCity, longitudeCurrentCity) {
   // The location of Minsk
-  const minsk = { lat: 53.8962037, lng: 27.5504956 };
+  const city = {lat: latitudeCurrentCity, lng: longitudeCurrentCity};
   // The map, centered at minsk
   const map = new google.maps.Map(
     document.querySelector('.user-location__geolocation'),
     {
       zoom: 7,
-      center: minsk,
+      center: city,
     }
   );
   
-  // The marker, positioned at minsk
+  // The marker, positioned at city
   const marker = new google.maps.Marker({
-    position: minsk,
+    position: city,
     map: map,
   });
 }
@@ -79,6 +79,7 @@ async function getGeolocation() {
   await getCountryCode(data);
   showCurrentCityName (data);
   console.log(data, data.city, data.country);
+  getCoordinateCurrentCity(data);
 }
 
 
@@ -102,4 +103,12 @@ function showCurrentCountryName (key, countryCode) {
 function showCurrentCityName (data) {
   const cityNameElement = document.querySelector('.city-name');
   cityNameElement.innerHTML = data.city.toUpperCase();
+}
+
+function getCoordinateCurrentCity(data){
+  const coordinateFull = data.loc.split(',');
+  let latitudeCurrentCity = +coordinateFull[0];
+  let longitudeCurrentCity = +coordinateFull[1];
+  console.log(latitudeCurrentCity, longitudeCurrentCity);
+  initMap(latitudeCurrentCity, longitudeCurrentCity);
 }
