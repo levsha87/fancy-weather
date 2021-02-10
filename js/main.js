@@ -79,11 +79,11 @@ async function getGeolocationIpInfo() {
   await getCountryCode(data);
   showCurrentCityName (data);
   console.log(data, data.city, data.country);
-  getCoordinateCurrentCity(data);
 }
 
 
 getGeolocationIpInfo();
+getCoordinateCurrentCityNavigator ();
 
 async function getCountryCode(data) {
   let names = await fetch('./names.json');
@@ -103,14 +103,6 @@ function showCurrentCountryName (key, countryCode) {
 function showCurrentCityName (data) {
   const cityNameElement = document.querySelector('.city-name');
   cityNameElement.innerHTML = data.city.toUpperCase();
-}
-
-function getCoordinateCurrentCity(data){
-  const coordinateFull = data.loc.split(',');
-  let latitudeCurrentCity = +coordinateFull[0];
-  let longitudeCurrentCity = +coordinateFull[1];
-  console.log(latitudeCurrentCity, longitudeCurrentCity);
-  initMap(latitudeCurrentCity, longitudeCurrentCity);
 }
 
 function getCoordinateCurrentCityNavigator (){
@@ -133,4 +125,4 @@ function getCoordinateCurrentCityNavigator (){
   }
 }
 
-getCoordinateCurrentCityNavigator ();
+
