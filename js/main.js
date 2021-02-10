@@ -73,7 +73,7 @@ setInterval(() => {
 
 /*--------------------get geolocation--------------------*/
 
-async function getGeolocation() {
+async function getGeolocationIpInfo() {
   let response = await fetch('https://ipinfo.io/json?token=543fd5d393e868');
   let data = await response.json();
   await getCountryCode(data);
@@ -83,7 +83,7 @@ async function getGeolocation() {
 }
 
 
-getGeolocation();
+getGeolocationIpInfo();
 
 async function getCountryCode(data) {
   let names = await fetch('./names.json');
@@ -112,3 +112,25 @@ function getCoordinateCurrentCity(data){
   console.log(latitudeCurrentCity, longitudeCurrentCity);
   initMap(latitudeCurrentCity, longitudeCurrentCity);
 }
+
+function getCoordinateCurrentCityNavigator (){
+  navigator.geolocation.getCurrentPosition(success, error);
+  function success(pos) {
+    let crd = pos.coords;
+    let latitudeCurrentCity = +crd.latitude;
+    let longitudeCurrentCity = +crd.longitude;
+    
+    console.log('Ваше текущее метоположение:');
+    console.log(`Широта: ${crd.latitude}`);
+    console.log(`Долгота: ${crd.longitude}`);
+    console.log(`Плюс-минус ${crd.accuracy} метров.`);
+
+    initMap(latitudeCurrentCity, longitudeCurrentCity);
+  }
+
+  function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+  }
+}
+
+getCoordinateCurrentCityNavigator ();
