@@ -100,6 +100,7 @@ function getCoordinateCurrentCityNavigator (){
 
     initMap(latitudeCurrentCity, longitudeCurrentCity);
     getPlaceNameByCoordinate(latitudeCurrentCity, longitudeCurrentCity);
+    getWeatherData(latitudeCurrentCity, longitudeCurrentCity);
   }
 
   function error(err) {
@@ -124,4 +125,15 @@ async function  getPlaceNameByCoordinate(latitudeCurrentCity, longitudeCurrentCi
   showCurrentCountryName (currentCountry);
   showCurrentCityName (currentTown);
   console.log(place);
+}
+
+
+
+async function getWeatherData(latitudeCurrentCity, longitudeCurrentCity){
+  
+  let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitudeCurrentCity.toString()}&lon=${longitudeCurrentCity.toString()}&appid=0f57bad2b641ca690297cce9e9f87665`;
+  let responseWeatherData = await fetch(url);
+  let weatherData = await responseWeatherData.json();
+  
+  console.log(weatherData);
 }
