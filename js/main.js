@@ -20,6 +20,7 @@ window.onclick = function (event) {
 
 // Initialize and add the map
 function initMap(latitudeCurrentCity, longitudeCurrentCity) {
+  console.log(latitudeCurrentCity, longitudeCurrentCity);
   // The location of Minsk
   const city = {lat: latitudeCurrentCity, lng: longitudeCurrentCity};
   // The map, centered at minsk
@@ -86,7 +87,7 @@ function showCurrentCityName (currentTown) {
 }
 
 function getCoordinateCurrentCityNavigator (){
-  navigator.geolocation.getCurrentPosition(success, error);
+  navigator.geolocation.getCurrentPosition(success, error, {maximumAge:60000, timeout:5000, enableHighAccuracy:true});
   function success(pos) {
     let crd = pos.coords;
     let latitudeCurrentCity = +crd.latitude;
@@ -98,7 +99,6 @@ function getCoordinateCurrentCityNavigator (){
     console.log(`Долгота: ${crd.longitude}`);
     console.log(`Плюс-минус ${crd.accuracy} метров.`);
 
-    initMap(latitudeCurrentCity, longitudeCurrentCity);
     getPlaceNameByCoordinate(latitudeCurrentCity, longitudeCurrentCity);
     getWeatherData(latitudeCurrentCity, longitudeCurrentCity);
   }
