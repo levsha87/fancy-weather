@@ -72,37 +72,14 @@ setInterval(() => {
 
 
 /*--------------------get geolocation--------------------*/
-
-async function getGeolocationIpInfo() {
-  let response = await fetch('https://ipinfo.io/json?token=543fd5d393e868');
-  let data = await response.json();
-  await getCountryCode(data);
-  showCurrentCityName (data);
-  console.log(data, data.city, data.country);
-}
-
-
-getGeolocationIpInfo();
-getCoordinateCurrentCityNavigator ();
-
-async function getCountryCode(data) {
-  let names = await fetch('./names.json');
-  let countryCode = await names.json();
-  for(let key in countryCode) {
-    if(key === data.country) {
-      showCurrentCountryName (key, countryCode);
-    }
-  }
-}
-
-function showCurrentCountryName (key, countryCode) {
+function showCurrentCountryName (currentCountry) {
   const countryNameElement = document.querySelector('.country-name');
-  countryNameElement.innerHTML = countryCode[key].toUpperCase();
+  countryNameElement.innerHTML = currentCountry.toUpperCase();
 }
 
-function showCurrentCityName (data) {
+function showCurrentCityName (currentTown) {
   const cityNameElement = document.querySelector('.city-name');
-  cityNameElement.innerHTML = data.city.toUpperCase();
+  cityNameElement.innerHTML = currentTown.toUpperCase();
 }
 
 function getCoordinateCurrentCityNavigator (){
@@ -112,12 +89,14 @@ function getCoordinateCurrentCityNavigator (){
     let latitudeCurrentCity = +crd.latitude;
     let longitudeCurrentCity = +crd.longitude;
     
+    
     console.log('Ваше текущее метоположение:');
     console.log(`Широта: ${crd.latitude}`);
     console.log(`Долгота: ${crd.longitude}`);
     console.log(`Плюс-минус ${crd.accuracy} метров.`);
 
     initMap(latitudeCurrentCity, longitudeCurrentCity);
+    getPlaceNameByCoordinate(latitudeCurrentCity, longitudeCurrentCity);
   }
 
   function error(err) {
@@ -126,3 +105,22 @@ function getCoordinateCurrentCityNavigator (){
 }
 
 
+getCoordinateCurrentCityNavigator ();
+
+/* async function getCoordinateByPlaceName() {
+  let response = await fetch('https://api.opencagedata.com/geocode/v1/json?q=СМОЛЕВИЧИ&key=0f2efca19d1747cd906baa8bb7f8c2f7');
+  let coord = await response.json();
+  console.log(coord);
+}
+getCoordinateByPlaceName(); */
+
+async function  getPlaceNameByCoordinate(latitudeCurrentCity, longitudeCurrentCity) {
+  let url = `https://api.opencagedata.com/geocode/v1/json?q=${latitudeCurrentCity.toString()},${longitudeCurrentCity.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7`;
+  let response = await fetch(url);
+  let place = await response.json();
+  let currentCountry = place.results[0].components.country;
+  let currentTown = place.results[0].components.town;
+  
+  showCurrentCountryName (currentCountry);
+  showCurrentCityName (currentTown);
+}
