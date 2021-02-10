@@ -72,6 +72,9 @@ setInterval(() => {
 
 
 /*--------------------get geolocation--------------------*/
+
+getCoordinateCurrentCityNavigator ();
+
 function showCurrentCountryName (currentCountry) {
   const countryNameElement = document.querySelector('.country-name');
   countryNameElement.innerHTML = currentCountry.toUpperCase();
@@ -104,9 +107,6 @@ function getCoordinateCurrentCityNavigator (){
   }
 }
 
-
-getCoordinateCurrentCityNavigator ();
-
 /* async function getCoordinateByPlaceName() {
   let response = await fetch('https://api.opencagedata.com/geocode/v1/json?q=СМОЛЕВИЧИ&key=0f2efca19d1747cd906baa8bb7f8c2f7');
   let coord = await response.json();
@@ -115,12 +115,13 @@ getCoordinateCurrentCityNavigator ();
 getCoordinateByPlaceName(); */
 
 async function  getPlaceNameByCoordinate(latitudeCurrentCity, longitudeCurrentCity) {
-  let url = `https://api.opencagedata.com/geocode/v1/json?q=${latitudeCurrentCity.toString()},${longitudeCurrentCity.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7`;
+  let url = `https://api.opencagedata.com/geocode/v1/json?q=${latitudeCurrentCity.toString()},${longitudeCurrentCity.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7&language=en`;
   let response = await fetch(url);
   let place = await response.json();
   let currentCountry = place.results[0].components.country;
   let currentTown = place.results[0].components.town;
-  
+
   showCurrentCountryName (currentCountry);
   showCurrentCityName (currentTown);
+  console.log(place);
 }
