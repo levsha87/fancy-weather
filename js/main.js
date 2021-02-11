@@ -95,11 +95,12 @@ function getCoordinateCurrentCityNavigator() {
     timeout: 5000,
     enableHighAccuracy: true,
   });
+
   function success(pos) {
     let crd = pos.coords;
     let latitudeCurrentCity = +crd.latitude;
     let longitudeCurrentCity = +crd.longitude;
-
+    
     console.log('Ваше текущее метоположение:');
     console.log(`Широта: ${crd.latitude}`);
     console.log(`Долгота: ${crd.longitude}`);
@@ -134,16 +135,16 @@ async function getPlaceNameByCoordinate(
 
   showCurrentCountryName(currentCountry);
   showCurrentCityName(currentTown);
-  showCoordinateCurrentPlace(latitudeCurrentCity, longitudeCurrentCity);
+  showCoordinateCurrentPlace(place);
   console.log(place);
 }
 
-function showCoordinateCurrentPlace(latitudeCurrentCity, longitudeCurrentCity) {
+function showCoordinateCurrentPlace(place) {
   let latitude = document.querySelector('.latitude');
   let longitude = document.querySelector('.longitude');
 
-  latitude.innerHTML = `Latitude: ${latitudeCurrentCity.toFixed(6)}`;
-  longitude.innerHTML = `Longitude: ${longitudeCurrentCity.toFixed(6)}`;
+  latitude.innerHTML = `Latitude:  ${place.results[0].annotations.DMS.lat}`;
+  longitude.innerHTML = `Longitude: ${place.results[0].annotations.DMS.lng}`; 
 }
 
 async function getWeatherData(latitudeCurrentCity, longitudeCurrentCity) {
@@ -164,6 +165,7 @@ function showCurrentTemperature(weatherData) {
   );
   currentTemperature.innerHTML = Math.trunc(weatherData.list[0].main.temp);
 }
+
 function showCurrentIcon(weatherData) {
   let currentIcon = document.querySelector('.current-icon');
   let iconDescriptor = weatherData.list[0].weather[0].icon;
