@@ -75,6 +75,7 @@ setInterval(() => {
 /*--------------------get geolocation--------------------*/
 
 getCoordinateCurrentCityNavigator ();
+setThreeNextDays();
 
 function showCurrentCountryName (currentCountry) {
   const countryNameElement = document.querySelector('.country-name');
@@ -149,7 +150,7 @@ function showCurrentTemperature (weatherData){
 function showCurrentIcon (weatherData){
   let currentIcon= document.querySelector('.current-icon');
   let iconDescriptor = weatherData.list[0].weather[0].icon;
-  currentIcon.innerHTML = `http://openweathermap.org/img/wn/${iconDescriptor}@2x.png`;
+  currentIcon.src = `http://openweathermap.org/img/wn/${iconDescriptor}@2x.png`;
 }
 
 
@@ -200,3 +201,21 @@ function translateValueWindDirectionDegToCard (deg){
     return "N"; 
   }
 } 
+
+function setThreeNextDays (){
+  let today = new Date();
+  let todayDate = today.getDate();
+
+  let firstDayUTC = new Date(today.setDate(`${todayDate+1}`));
+    firstDayUTC = firstDayUTC.setHours(12,0,0,0)/1000 + 10800;
+
+  let secondDayUTC = new Date(today.setDate(`${todayDate+2}`));
+    secondDayUTC = secondDayUTC.setHours(12,0,0,0)/1000 + 10800;
+
+  let thirdDayUTC = new Date(today.setDate(`${todayDate+3}`));
+    thirdDayUTC = thirdDayUTC.setHours(12,0,0,0)/1000 + 10800;
+
+  console.log(firstDayUTC, secondDayUTC, thirdDayUTC);
+  
+}
+
