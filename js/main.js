@@ -139,13 +139,19 @@ async function getWeatherData(latitudeCurrentCity, longitudeCurrentCity){
   console.log(weatherData);
   showCurrentTemperature (weatherData);
   showCurrentWeatherDescribe (weatherData);
-  
+  showCurrentIcon (weatherData);
 }
 
 function showCurrentTemperature (weatherData){
   let currentTemperature = document.querySelector('.weather-today__temperature_number_value');
   currentTemperature.innerHTML = Math.trunc(weatherData.list[0].main.temp);
 } 
+function showCurrentIcon (weatherData){
+  let currentIcon= document.querySelector('.current-icon');
+  let iconDescriptor = weatherData.list[0].weather[0].icon;
+  currentIcon.innerHTML = `http://openweathermap.org/img/wn/${iconDescriptor}@2x.png`;
+}
+
 
 function showCurrentWeatherDescribe (weatherData){
   let summury = document.querySelector('.weather-today_summury');
