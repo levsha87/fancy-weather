@@ -277,9 +277,9 @@ function showIconsNextThreeDays (weatherData){
 }
 
 function showTemperatureNumberNextThreeDays (weatherData, indexFirstDayUTC, indexSecondDayUTC, indexThirdDayUTC){
-  let firstDayTempratureNumber = document.querySelector('.weather-next-days__first_temperature_number');
-  let secondDayTempratureNumber = document.querySelector('.weather-next-days__second_temperature_number');
-  let thirdDayTempratureNumber = document.querySelector('.weather-next-days__third_temperature_number');
+  let firstDayTempratureNumber = document.querySelector('.weather-next-days__first_temperature_value');
+  let secondDayTempratureNumber = document.querySelector('.weather-next-days__second_temperature_value');
+  let thirdDayTempratureNumber = document.querySelector('.weather-next-days__third_temperature_value');
 
   firstDayTempratureNumber.innerHTML = Math.trunc(weatherData.list[indexFirstDayUTC].main.temp);
   secondDayTempratureNumber.innerHTML = Math.trunc(weatherData.list[indexSecondDayUTC].main.temp);
