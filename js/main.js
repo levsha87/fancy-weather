@@ -41,6 +41,10 @@ function initMap(latitudeCurrentCity, longitudeCurrentCity) {
 
 /*--------------------get current month, day, time---------------*/
 
+let FIRST_DAY_UTC;
+let SECOND_DAY_UTC;
+let THIRD_DAY_UTC;
+
 function getCurrentFullTime(month, dateToday, dayToday, timeNow) {
   let today = new Date();
   const arr = today.toString().split(' ');
@@ -74,7 +78,7 @@ setInterval(() => {
 
 /*--------------------get geolocation--------------------*/
 
-getCoordinateCurrentCityNavigator ();
+getCoordinateCurrentCityNavigator();
 setThreeNextDays();
 
 function showCurrentCountryName (currentCountry) {
@@ -141,6 +145,7 @@ async function getWeatherData(latitudeCurrentCity, longitudeCurrentCity){
   showCurrentTemperature (weatherData);
   showCurrentWeatherDescribe (weatherData);
   showCurrentIcon (weatherData);
+  showIconsNextThreeDays(weatherData);
 }
 
 function showCurrentTemperature (weatherData){
@@ -206,20 +211,20 @@ function setThreeNextDays (){
   let today = new Date();
   let todayDate = today.getDate();
 
-  let firstDayUTC = new Date(today.setDate(`${todayDate+1}`));
-    firstDayUTC = firstDayUTC.setHours(12,0,0,0)/1000 + 10800;
+  FIRST_DAY_UTC = new Date(today.setDate(`${todayDate+1}`));
+    FIRST_DAY_UTC = FIRST_DAY_UTC.setHours(12,0,0,0)/1000 + 10800;
 
-  let secondDayUTC = new Date(today.setDate(`${todayDate+2}`));
-    secondDayUTC = secondDayUTC.setHours(12,0,0,0)/1000 + 10800;
+  SECOND_DAY_UTC = new Date(today.setDate(`${todayDate+2}`));
+    SECOND_DAY_UTC = SECOND_DAY_UTC.setHours(12,0,0,0)/1000 + 10800;
 
-  let thirdDayUTC = new Date(today.setDate(`${todayDate+3}`));
-    thirdDayUTC = thirdDayUTC.setHours(12,0,0,0)/1000 + 10800;
+  THIRD_DAY_UTC = new Date(today.setDate(`${todayDate+3}`));
+    THIRD_DAY_UTC = THIRD_DAY_UTC.setHours(12,0,0,0)/1000 + 10800;
 
-  console.log(firstDayUTC, secondDayUTC, thirdDayUTC);
-  showNameNextThreeDays(firstDayUTC, secondDayUTC, thirdDayUTC);
+  console.log(FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC);
+  showNameNextThreeDays(FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC);
 }
 
-function showNameNextThreeDays(firstDayUTC, secondDayUTC, thirdDayUTC) {
+function showNameNextThreeDays(FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC) {
   let firstNameDay = document.querySelector('.weather-next-days__first_name-day');
   let secondNameDay = document.querySelector('.weather-next-days__second_name-day');
   let thirdNameDay = document.querySelector('.weather-next-days__third_name-day');
@@ -243,11 +248,29 @@ const daysEn = [
   'Friday',
   'Saturday'];
 
-let first = new Date(firstDayUTC*1000).getDay();
-let second =new Date(secondDayUTC*1000).getDay();
-let third = new Date(thirdDayUTC*1000).getDay();
+let first = new Date(FIRST_DAY_UTC*1000).getDay();
+let second =new Date(SECOND_DAY_UTC*1000).getDay();
+let third = new Date(THIRD_DAY_UTC*1000).getDay();
 
 firstNameDay.innerHTML = daysEn[first];
 secondNameDay.innerHTML = daysEn[second];
 thirdNameDay.innerHTML = daysEn[third];
 } 
+
+function showIconsNextThreeDays (weatherData){
+  let indexFirstDayUTC = weatherData.list.findIndex(item => item.dt === FIRST_DAY_UTC);
+  let indexSecondDayUTC = weatherData.list.findIndex(item => item.dt === SECOND_DAY_UTC);
+  let indexThirdDayUTC = weatherData.list.findIndex(item => item.dt === THIRD_DAY_UTC);
+
+  let firstDayIcon = document.querySelector('.weather-next-days__first_icons-img');
+  let secondDayIcon = document.querySelector('.weather-next-days__second_icons-img');
+  let thirdDayIcon = document.querySelector('.weather-next-days__third_icons-img');
+
+  let iconDescriptorFirst = weatherData.list[indexFirstDayUTC].weather[0].icon;
+  let iconDescriptorSecond = weatherData.list[indexSecondDayUTC].weather[0].icon;
+  let iconDescriptorThird = weatherData.list[indexThirdDayUTC].weather[0].icon;
+
+  firstDayIcon.src = `http://openweathermap.org/img/wn/${iconDescriptorFirst}@2x.png`;
+  secondDayIcon.src = `http://openweathermap.org/img/wn/${iconDescriptorSecond}@2x.png`;
+  thirdDayIcon.src = `http://openweathermap.org/img/wn/${iconDescriptorThird}@2x.png`;
+}
