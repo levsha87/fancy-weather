@@ -273,4 +273,15 @@ function showIconsNextThreeDays (weatherData){
   firstDayIcon.src = `http://openweathermap.org/img/wn/${iconDescriptorFirst}@2x.png`;
   secondDayIcon.src = `http://openweathermap.org/img/wn/${iconDescriptorSecond}@2x.png`;
   thirdDayIcon.src = `http://openweathermap.org/img/wn/${iconDescriptorThird}@2x.png`;
+  showTemperatureNumberNextThreeDays (weatherData, indexFirstDayUTC, indexSecondDayUTC, indexThirdDayUTC);
+}
+
+function showTemperatureNumberNextThreeDays (weatherData, indexFirstDayUTC, indexSecondDayUTC, indexThirdDayUTC){
+  let firstDayTempratureNumber = document.querySelector('.weather-next-days__first_temperature_number');
+  let secondDayTempratureNumber = document.querySelector('.weather-next-days__second_temperature_number');
+  let thirdDayTempratureNumber = document.querySelector('.weather-next-days__third_temperature_number');
+
+  firstDayTempratureNumber.innerHTML = Math.trunc(weatherData.list[indexFirstDayUTC].main.temp);
+  secondDayTempratureNumber.innerHTML = Math.trunc(weatherData.list[indexSecondDayUTC].main.temp);
+  thirdDayTempratureNumber.innerHTML = Math.trunc(weatherData.list[indexThirdDayUTC].main.temp);
 }
