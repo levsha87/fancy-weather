@@ -216,6 +216,38 @@ function setThreeNextDays (){
     thirdDayUTC = thirdDayUTC.setHours(12,0,0,0)/1000 + 10800;
 
   console.log(firstDayUTC, secondDayUTC, thirdDayUTC);
-  
+  showNameNextThreeDays(firstDayUTC, secondDayUTC, thirdDayUTC);
 }
 
+function showNameNextThreeDays(firstDayUTC, secondDayUTC, thirdDayUTC) {
+  let firstNameDay = document.querySelector('.weather-next-days__first_name-day');
+  let secondNameDay = document.querySelector('.weather-next-days__second_name-day');
+  let thirdNameDay = document.querySelector('.weather-next-days__third_name-day');
+
+  const daysRus = [
+  'Воскресенье',
+  'Понедельник',
+  'Вторник',
+  'Среда',
+  'Четверг',
+  'Пятница',
+  'Суббота'
+];
+
+const daysEn = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday'];
+
+let first = new Date(firstDayUTC*1000).getDay();
+let second =new Date(secondDayUTC*1000).getDay();
+let third = new Date(thirdDayUTC*1000).getDay();
+
+firstNameDay.innerHTML = daysEn[first];
+secondNameDay.innerHTML = daysEn[second];
+thirdNameDay.innerHTML = daysEn[third];
+} 
