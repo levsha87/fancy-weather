@@ -45,6 +45,10 @@ let FIRST_DAY_UTC;
 let SECOND_DAY_UTC;
 let THIRD_DAY_UTC;
 
+getCoordinateCurrentCityNavigator();
+setThreeNextDays();
+changeBackkgroundImage ();
+
 function getCurrentFullTime(month, dateToday, dayToday, timeNow) {
   let today = new Date();
   const arr = today.toString().split(' ');
@@ -75,9 +79,6 @@ setInterval(() => {
 }, 1000);
 
 /*--------------------get geolocation--------------------*/
-
-getCoordinateCurrentCityNavigator();
-setThreeNextDays();
 
 function showCurrentCountryName(currentCountry) {
   const countryNameElement = document.querySelector('.country-name');
@@ -343,4 +344,14 @@ function showTemperatureNumberNextThreeDays(
   thirdDayTempratureNumber.innerHTML = Math.trunc(
     weatherData.list[indexThirdDayUTC].main.temp
   );
+}
+
+ 
+
+async function changeBackkgroundImage() {
+  let response = await fetch('https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=76d735b7381e9ed633854a67b69d8387&tags=nature,weather,dark&tag_mode=all&extras=url_h&format=json&nojsoncallback=1');
+  let images = await response.json();
+  let item = images.photos.photo[Math.floor(Math.random()*images.photos.photo.length)];
+  urlPhoto = item.url_h;
+  document.documentElement.style.background = `url(${urlPhoto})`;
 }
