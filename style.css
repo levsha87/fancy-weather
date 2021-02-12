@@ -8,14 +8,15 @@
   box-sizing: border-box;
 }
 
- html {
-    background: url(./images/winter-background-defoult.jpg) no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-        transition: background 2s;
-} 
+html {
+  background: url(./images/winter-background-defoult.jpg) no-repeat center
+    center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  transition: background 2s;
+}
 
 body {
   max-width: 1020px;
@@ -95,21 +96,49 @@ body {
   display: flex;
 }
 
-.temperature-buttons > * {
-  font-size: 16px;
+.temperature-buttons_radio {
+  font-size: 24px;
   color: white;
   width: 44px;
   height: 44px;
   background: rgba(174, 181, 185, 0.5);
   text-align: center;
   border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-.celsius-button {
+.radio-input {
+  appearance: none;
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  z-index: 10;
+}
+
+.radio-input:checked + .radio-label::before {
+  content: '';
+  width: 42px;
+  height: 42px;
+  background: rgba(255, 255, 255, 0.2);
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px white, -2px -2px 5px white;
+}
+
+.radio-input:checked + .radio-label {
+  color: rgb(255, 255, 0);
+}
+
+.temperature-buttons_radio:first-child {
   border-radius: 5px 0 0 5px;
 }
 
-.fahrenheit-button {
+.temperature-buttons_radio:last-child {
   border-radius: 0 5px 5px 0;
 }
 
@@ -255,7 +284,7 @@ body {
 }
 
 .weather-today__temperature_number img {
-  position:absolute;
+  position: absolute;
   width: 250px;
   right: -165px;
   top: -90px;
@@ -275,13 +304,11 @@ body {
   font-family: Montserrat-Bold;
   font-size: 20px;
   padding-top: 75px;
-   
 }
 
-.weather-today__description >* {
+.weather-today__description > * {
   display: block;
 }
-
 
 .weather-next-days {
   display: flex;
@@ -319,7 +346,7 @@ body {
   z-index: 10;
 }
 
-.weather-next-days_icons{
+.weather-next-days_icons {
   position: absolute;
   top: -15%;
   left: 30%;
@@ -338,7 +365,18 @@ body {
 .user-location__geolocation {
   width: 260px;
   height: 260px;
-  clip-path: polygon(100% 0, 100% 100%, 90% 90%, 13% 90%, 9% 90%, 6% 89%, 3% 86%, 1% 84%, 0 81%, 0 0);
+  clip-path: polygon(
+    100% 0,
+    100% 100%,
+    90% 90%,
+    13% 90%,
+    9% 90%,
+    6% 89%,
+    3% 86%,
+    1% 84%,
+    0 81%,
+    0 0
+  );
   border-radius: 10% 10% 0 10%;
 }
 

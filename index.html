@@ -23,8 +23,14 @@
           </div>
         </div>
         <div class="temperature-buttons">
-          <button type="checkbox" class="celsius-button">°C</button>
-          <button type="checkbox" class="fahrenheit-button">°F</button>
+          <div class="temperature-buttons_radio">
+            <input type="radio" name="temperature" value="C" class="radio-input" id="temperature-celsius"></input>
+            <label class="radio-label radio-label_celsius" for="celsius-button">°C</label>
+          </div>
+          <div class="temperature-buttons_radio">
+            <input type="radio" name="temperature" value="F" class="radio-input" id="temperature-fahrenheit"></input>
+            <label class="radio-label radio-label_fahrenheit" for="fahrenheit-button">°F</label>
+          </div>
         </div>
       </nav>
 
