@@ -79,6 +79,17 @@ body {
   color: white;
 }
 
+.refresh-button.active:before {
+  animation: rotate-around 1s forwards;
+  animation-play-state: running;
+}
+
+@keyframes rotate-around {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .temperature-buttons {
   display: flex;
 }

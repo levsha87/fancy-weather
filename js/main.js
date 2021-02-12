@@ -47,7 +47,8 @@ let THIRD_DAY_UTC;
 
 getCoordinateCurrentCityNavigator();
 setThreeNextDays();
-changeBackkgroundImage ();
+changeBackkgroundImage();
+changeBackgroundHandly();
 
 function getCurrentFullTime(month, dateToday, dayToday, timeNow) {
   let today = new Date();
@@ -101,7 +102,7 @@ function getCoordinateCurrentCityNavigator() {
     let crd = pos.coords;
     let latitudeCurrentCity = +crd.latitude;
     let longitudeCurrentCity = +crd.longitude;
-    
+
     console.log('Ваше текущее метоположение:');
     console.log(`Широта: ${crd.latitude}`);
     console.log(`Долгота: ${crd.longitude}`);
@@ -132,14 +133,14 @@ async function getPlaceNameByCoordinate(
   let response = await fetch(url);
   let place = await response.json();
   let currentCountry = place.results[0].components.country;
-  let currentTown = place.results[0].components.town || place.results[0].components.city;
+  let currentTown =
+    place.results[0].components.town || place.results[0].components.city;
 
   console.log(place);
 
   showCurrentCountryName(currentCountry);
   showCurrentCityName(currentTown);
   showCoordinateCurrentPlace(place);
-  
 }
 
 function showCoordinateCurrentPlace(place) {
@@ -147,7 +148,7 @@ function showCoordinateCurrentPlace(place) {
   let longitude = document.querySelector('.longitude');
 
   latitude.innerHTML = `Latitude:  ${place.results[0].annotations.DMS.lat}`;
-  longitude.innerHTML = `Longitude: ${place.results[0].annotations.DMS.lng}`; 
+  longitude.innerHTML = `Longitude: ${place.results[0].annotations.DMS.lng}`;
 }
 
 async function getWeatherData(latitudeCurrentCity, longitudeCurrentCity) {
@@ -348,12 +349,28 @@ function showTemperatureNumberNextThreeDays(
   );
 }
 
- 
-
 async function changeBackkgroundImage() {
-  let response = await fetch('https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=76d735b7381e9ed633854a67b69d8387&tags=nature,weather,dark&tag_mode=all&extras=url_h&format=json&nojsoncallback=1');
+  let response = await fetch(
+    'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=76d735b7381e9ed633854a67b69d8387&tags=nature,weather,dark&tag_mode=all&extras=url_h&format=json&nojsoncallback=1'
+  );
   let images = await response.json();
-  let item = images.photos.photo[Math.floor(Math.random()*images.photos.photo.length)];
+  let item =
+    images.photos.photo[Math.floor(Math.random() * images.photos.photo.length)];
   urlPhoto = item.url_h;
   document.documentElement.style.background = `url(${urlPhoto})`;
+}
+
+function changeBackgroundHandly() {
+  let refreshButton = document.querySelector('.refresh-button');
+  refreshButton.addEventListener('click', changeBackkgroundImageRefreshButton);
+  refreshButton.addEventListener('animationend', changeBackkgroundImageRefreshButtonAnimationend);
+
+  function changeBackkgroundImageRefreshButton() {
+    refreshButton.classList.add('active');
+    changeBackkgroundImage();
+  }
+
+  function changeBackkgroundImageRefreshButtonAnimationend() {
+    refreshButton.classList.remove('active');
+  }
 }
