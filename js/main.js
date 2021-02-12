@@ -132,12 +132,14 @@ async function getPlaceNameByCoordinate(
   let response = await fetch(url);
   let place = await response.json();
   let currentCountry = place.results[0].components.country;
-  let currentTown = place.results[0].components.town;
+  let currentTown = place.results[0].components.town || place.results[0].components.city;
+
+  console.log(place);
 
   showCurrentCountryName(currentCountry);
   showCurrentCityName(currentTown);
   showCoordinateCurrentPlace(place);
-  console.log(place);
+  
 }
 
 function showCoordinateCurrentPlace(place) {
