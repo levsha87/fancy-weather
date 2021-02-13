@@ -133,6 +133,10 @@ body {
   color: rgb(255, 255, 0);
 }
 
+.radio-input:checked:focus {
+  outline: 0;
+}
+
 .temperature-buttons_radio:first-child {
   border-radius: 5px 0 0 5px;
 }
