@@ -32,14 +32,25 @@ changeBackgroundHandly();
 
 function getCurrentFullTime(month, dateToday, dayToday, timeNow) {
   let today = new Date();
-  const arr = today.toString().split(' ');
+  let arr = today.toString().split(' ');
   arr.length = 5;
-
+  console.log(today);
   month = arr[1];
   dateToday = arr[2];
   dayToday = arr[0];
   timeNow = arr[4];
 
+   /* if (true) {
+    arr = today.toLocaleString('ru', {
+      day: 'numeric',
+      weekday: 'short',
+      month: 'short',
+    }).replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
+  month = arr[2];
+  dateToday = arr[1];
+  dayToday = arr[0];
+  }  */
+  
   showCurrentTime(month, dateToday, dayToday, timeNow);
 }
 
@@ -109,7 +120,7 @@ async function getPlaceNameByCoordinate(
   latitudeCurrentCity,
   longitudeCurrentCity
 ) {
-  let url = `https://api.opencagedata.com/geocode/v1/json?q=${latitudeCurrentCity.toString()},${longitudeCurrentCity.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7&language=en`;
+  let url = `https://api.opencagedata.com/geocode/v1/json?q=${latitudeCurrentCity.toString()},${longitudeCurrentCity.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7&language=ru`;
   let response = await fetch(url);
   let place = await response.json();
   let currentCountry = place.results[0].components.country;
