@@ -139,14 +139,6 @@ function getCoordinateCurrentCityNavigator() {
   
 }
 
-
-/* async function getCoordinateByPlaceName() {
-  let response = await fetch('https://api.opencagedata.com/geocode/v1/json?q=СМОЛЕВИЧИ&key=0f2efca19d1747cd906baa8bb7f8c2f7');
-  let coord = await response.json();
-  console.log(coord);
-}
-getCoordinateByPlaceName(); */
-
 async function getPlaceNameByCoordinate(latitudeCurrentCity,longitudeCurrentCity ) {
   let url = `https://api.opencagedata.com/geocode/v1/json?q=${latitudeCurrentCity.toString()},${longitudeCurrentCity.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7&language=${LANG}`;
   let response = await fetch(url);
@@ -206,7 +198,7 @@ function showCurrentWeatherDescribe(weatherData) {
   let wind = document.querySelector('.weather-today_wind');
   let humidity = document.querySelector('.weather-today_humidity');
 
-  summury.innerHTML = weatherData.list[0].weather[0].description;
+  summury.innerHTML = weatherData.list[0].weather[0].description.toUpperCase();
 
   if (LANG === 'ru') {
     feel.innerHTML = `ОЩУЩАЕТСЯ КАК: ${Math.trunc(weatherData.list[0].main.feels_like)}°`;
@@ -422,5 +414,12 @@ function translateSearchForm() {
   }
 }
 
-  
+
+
+ async function getCoordinateByPlaceName() {
+  let response = await fetch('https://api.opencagedata.com/geocode/v1/json?q=Zhodino&key=0f2efca19d1747cd906baa8bb7f8c2f7');
+  let coord = await response.json();
+  console.log(coord);
+}
+getCoordinateByPlaceName();
 
