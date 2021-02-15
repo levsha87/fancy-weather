@@ -433,9 +433,18 @@ function translateSearchForm() {
 let searchButton = document.querySelector('.search-button');
 let searchField = document.querySelector('.search-field');
 
-searchButton.addEventListener('click', function getDataSearchForm(){
+searchButton.addEventListener('click', getDataSearchForm);
+
+searchField.addEventListener('keydown', (e) => {
+  if (e.keyCode === 13) {
+    e.preventDefault();
+    getDataSearchForm();
+  }
+}); 
+
+function getDataSearchForm(){
   CITY_NAME = searchField.value;
   searchField.value ='';
   console.log(CITY_NAME);
   getCoordinateByPlaceName(CITY_NAME);
-});
+}
