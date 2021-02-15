@@ -4,6 +4,7 @@ let UNIT_DEGREE = 'metric';
 let FIRST_DAY_UTC;
 let SECOND_DAY_UTC;
 let THIRD_DAY_UTC;
+let CITY_NAME;
 
 
 changeBackkgroundImage();
@@ -416,10 +417,25 @@ function translateSearchForm() {
 
 
 
- async function getCoordinateByPlaceName() {
-  let response = await fetch('https://api.opencagedata.com/geocode/v1/json?q=Zhodino&key=0f2efca19d1747cd906baa8bb7f8c2f7');
+ async function getCoordinateByPlaceName(CITY_NAME) {
+  let response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${CITY_NAME}&key=0f2efca19d1747cd906baa8bb7f8c2f7`);
   let coord = await response.json();
   console.log(coord);
+  let latitudeCurrentCity = coord.results[0].geometry.lat;
+  let longitudeCurrentCity = coord.results[0].geometry.lng;
+  console.log(latitudeCurrentCity, longitudeCurrentCity);
+  initMap(latitudeCurrentCity, longitudeCurrentCity);
+  getPlaceNameByCoordinate(latitudeCurrentCity, longitudeCurrentCity);
+  getWeatherData(LANG, latitudeCurrentCity, longitudeCurrentCity);
 }
-getCoordinateByPlaceName();
 
+
+let searchButton = document.querySelector('.search-button');
+let searchField = document.querySelector('.search-field');
+
+searchButton.addEventListener('click', function getDataSearchForm(){
+  CITY_NAME = searchField.value;
+  searchField.value ='';
+  console.log(CITY_NAME);
+  getCoordinateByPlaceName(CITY_NAME);
+});
