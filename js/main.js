@@ -1,5 +1,6 @@
 let LANGUAGE = document.querySelector('.dropdown-content');
 let LANG = 'en';
+let UNIT_DEGREE = 'metric';
 let FIRST_DAY_UTC;
 let SECOND_DAY_UTC;
 let THIRD_DAY_UTC;
@@ -12,14 +13,26 @@ setSelectedLanguage ();
 LANGUAGE.addEventListener('change', setSelectedLanguage);
 function setSelectedLanguage () {
   LANG = this.value || LANG;
-  console.log(this.value);
   setInterval(() => {
     getCurrentFullTime(LANG);
   }, 1000);
   getCoordinateCurrentCityNavigator();
   setThreeNextDays(LANG);
   translateSearchForm();
+}
+
+
+let buttons = document.querySelector('.temperature-buttons');
+buttons.addEventListener("change", function changeTemperatureUnit(event) {
+    let item = event.target.id;
+  if(item === 'temperature-celsius'){
+    UNIT_DEGREE = 'metric';
+    getCoordinateCurrentCityNavigator();
+  } else {
+    UNIT_DEGREE = 'imperial';
+    getCoordinateCurrentCityNavigator();
   }
+});
  
 // Initialize and add the map
 function initMap(latitudeCurrentCity, longitudeCurrentCity) {
@@ -163,7 +176,7 @@ function showCoordinateCurrentPlace(place) {
 }
 
 async function getWeatherData(LANG, latitudeCurrentCity, longitudeCurrentCity) {
-  let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitudeCurrentCity.toString()}&lon=${longitudeCurrentCity.toString()}&units=metric&appid=0f57bad2b641ca690297cce9e9f87665&lang=${LANG}`;
+  let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitudeCurrentCity.toString()}&lon=${longitudeCurrentCity.toString()}&units=${UNIT_DEGREE}&appid=0f57bad2b641ca690297cce9e9f87665&lang=${LANG}`;
   let responseWeatherData = await fetch(url);
   let weatherData = await responseWeatherData.json();
 
@@ -395,20 +408,7 @@ function changeBackgroundHandly() {
   }
 }
 
-function changeTemperatureUnit (temp, currentTemperature){
-  let buttons = document.querySelector('.temperature-buttons');
-  console.log(buttons);
-  
-  buttons.addEventListener("change", function(event) {
-    if(!event.target.checked && event.target.value ==='C'){
-      let item = event.target.checked;
-    console.log(item, event, event.isTrusted);
-    far = Math.trunc((temp * 9 / 5) + 32);
-    currentTemperature.innerHTML = far;
-    }
-    
-  });
-}
+
 
 function translateSearchForm() {
   let search = document.querySelector('.search-field');
@@ -421,4 +421,6 @@ function translateSearchForm() {
     button.innerHTML = 'SEARCH';
   }
 }
+
+  
 
