@@ -1,3 +1,26 @@
+let LANGUAGE = document.querySelector('.dropdown-content');
+let LANG = 'en';
+let FIRST_DAY_UTC;
+let SECOND_DAY_UTC;
+let THIRD_DAY_UTC;
+
+
+changeBackkgroundImage();
+changeBackgroundHandly();
+setSelectedLanguage ();
+
+LANGUAGE.addEventListener('change', setSelectedLanguage);
+function setSelectedLanguage () {
+  LANG = this.value || LANG;
+  console.log(this.value);
+  setInterval(() => {
+    getCurrentFullTime(LANG);
+  }, 1000);
+  getCoordinateCurrentCityNavigator();
+  setThreeNextDays(LANG);
+  translateSearchForm();
+  }
+ 
 // Initialize and add the map
 function initMap(latitudeCurrentCity, longitudeCurrentCity) {
   console.log(latitudeCurrentCity, longitudeCurrentCity);
@@ -21,38 +44,30 @@ function initMap(latitudeCurrentCity, longitudeCurrentCity) {
 
 /*--------------------get current month, day, time---------------*/
 
-let FIRST_DAY_UTC;
-let SECOND_DAY_UTC;
-let THIRD_DAY_UTC;
-
-getCoordinateCurrentCityNavigator();
-setThreeNextDays();
-changeBackkgroundImage();
-changeBackgroundHandly();
-
-function getCurrentFullTime(month, dateToday, dayToday, timeNow) {
+function getCurrentFullTime(LANG) {
   let today = new Date();
   let arr = today.toString().split(' ');
   arr.length = 5;
   console.log(today);
-  month = arr[1];
-  dateToday = arr[2];
-  dayToday = arr[0];
-  timeNow = arr[4];
+  let month = arr[1];
+  let dateToday = arr[2];
+  let dayToday = arr[0];
+  let timeNow = arr[4];
 
-   /* if (true) {
-    arr = today.toLocaleString('ru', {
-      day: 'numeric',
-      weekday: 'short',
-      month: 'short',
-    }).replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
-  month = arr[2];
-  dateToday = arr[1];
-  dayToday = arr[0];
-  }  */
-  
+    if (LANG === 'ru') {
+      arr = today.toLocaleString('ru', {
+        day: 'numeric',
+        weekday: 'short',
+        month: 'short',
+      }).replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
+    month = arr[2];
+    dateToday = arr[1];
+    dayToday = arr[0];
+    }
+
   showCurrentTime(month, dateToday, dayToday, timeNow);
 }
+
 
 function showCurrentTime(month, dateToday, dayToday, timeNow) {
   const monthEl = document.querySelector('.month');
@@ -66,9 +81,7 @@ function showCurrentTime(month, dateToday, dayToday, timeNow) {
   timeEl.innerHTML = timeNow;
 }
 
-setInterval(() => {
-  getCurrentFullTime();
-}, 1000);
+
 
 /*--------------------get geolocation--------------------*/
 
@@ -83,6 +96,7 @@ function showCurrentCityName(currentTown) {
 }
 
 function getCoordinateCurrentCityNavigator() {
+  console.log(LANG);
   navigator.geolocation.getCurrentPosition(success, error, {
     maximumAge: 60000,
     timeout: 5000,
@@ -98,16 +112,20 @@ function getCoordinateCurrentCityNavigator() {
     console.log(`Широта: ${crd.latitude}`);
     console.log(`Долгота: ${crd.longitude}`);
     console.log(`Плюс-минус ${crd.accuracy} метров.`);
+    console.log(latitudeCurrentCity, longitudeCurrentCity);
 
     initMap(latitudeCurrentCity, longitudeCurrentCity);
     getPlaceNameByCoordinate(latitudeCurrentCity, longitudeCurrentCity);
-    getWeatherData(latitudeCurrentCity, longitudeCurrentCity);
+    getWeatherData(LANG, latitudeCurrentCity, longitudeCurrentCity);
   }
 
   function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
+
+  
 }
+
 
 /* async function getCoordinateByPlaceName() {
   let response = await fetch('https://api.opencagedata.com/geocode/v1/json?q=СМОЛЕВИЧИ&key=0f2efca19d1747cd906baa8bb7f8c2f7');
@@ -116,18 +134,15 @@ function getCoordinateCurrentCityNavigator() {
 }
 getCoordinateByPlaceName(); */
 
-async function getPlaceNameByCoordinate(
-  latitudeCurrentCity,
-  longitudeCurrentCity
-) {
-  let url = `https://api.opencagedata.com/geocode/v1/json?q=${latitudeCurrentCity.toString()},${longitudeCurrentCity.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7&language=ru`;
+async function getPlaceNameByCoordinate(latitudeCurrentCity,longitudeCurrentCity ) {
+  let url = `https://api.opencagedata.com/geocode/v1/json?q=${latitudeCurrentCity.toString()},${longitudeCurrentCity.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7&language=${LANG}`;
   let response = await fetch(url);
   let place = await response.json();
   let currentCountry = place.results[0].components.country;
   let currentTown =
     place.results[0].components.town || place.results[0].components.city;
 
-  console.log(place);
+  console.log(place, LANG);
 
   showCurrentCountryName(currentCountry);
   showCurrentCityName(currentTown);
@@ -138,12 +153,17 @@ function showCoordinateCurrentPlace(place) {
   let latitude = document.querySelector('.latitude');
   let longitude = document.querySelector('.longitude');
 
-  latitude.innerHTML = `Latitude:  ${place.results[0].annotations.DMS.lat}`;
-  longitude.innerHTML = `Longitude: ${place.results[0].annotations.DMS.lng}`;
+  if (LANG === 'ru'){
+    latitude.innerHTML = `Широта:  ${place.results[0].annotations.DMS.lat}`;
+    longitude.innerHTML = `Долгота: ${place.results[0].annotations.DMS.lng}`;
+    } else {
+    latitude.innerHTML = `Latitude:  ${place.results[0].annotations.DMS.lat}`;
+    longitude.innerHTML = `Longitude: ${place.results[0].annotations.DMS.lng}`;
+  } 
 }
 
-async function getWeatherData(latitudeCurrentCity, longitudeCurrentCity) {
-  let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitudeCurrentCity.toString()}&lon=${longitudeCurrentCity.toString()}&units=metric&appid=0f57bad2b641ca690297cce9e9f87665`;
+async function getWeatherData(LANG, latitudeCurrentCity, longitudeCurrentCity) {
+  let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitudeCurrentCity.toString()}&lon=${longitudeCurrentCity.toString()}&units=metric&appid=0f57bad2b641ca690297cce9e9f87665&lang=${LANG}`;
   let responseWeatherData = await fetch(url);
   let weatherData = await responseWeatherData.json();
 
@@ -174,13 +194,15 @@ function showCurrentWeatherDescribe(weatherData) {
   let humidity = document.querySelector('.weather-today_humidity');
 
   summury.innerHTML = weatherData.list[0].weather[0].description;
-  feel.innerHTML = `FEELS LIKE: ${Math.trunc(
-    weatherData.list[0].main.feels_like
-  )}°`;
-  wind.innerHTML = `WIND: ${Math.trunc(
-    weatherData.list[0].wind.speed
-  )} m/s ${translateValueWindDirectionDegToCard(weatherData.list[0].wind.deg)}`;
-  humidity.innerHTML = `HUMIDITY: ${weatherData.list[0].main.humidity}%`;
+
+  if (LANG === 'ru') {
+    feel.innerHTML = `ОЩУЩАЕТСЯ КАК: ${Math.trunc(weatherData.list[0].main.feels_like)}°`;
+    wind.innerHTML = `ВЕТЕР: ${Math.trunc(weatherData.list[0].wind.speed)} m/s ${translateValueWindDirectionDegToCard(weatherData.list[0].wind.deg)}`;
+    humidity.innerHTML = `ВЛАЖНОСТЬ: ${weatherData.list[0].main.humidity}%`;
+  } else {
+    feel.innerHTML = `FEELS LIKE: ${Math.trunc(weatherData.list[0].main.feels_like)}°`;
+    wind.innerHTML = `WIND: ${Math.trunc(weatherData.list[0].wind.speed)} m/s ${translateValueWindDirectionDegToCard(weatherData.list[0].wind.deg)}`;
+    humidity.innerHTML = `HUMIDITY: ${weatherData.list[0].main.humidity}%`;}
 }
 
 function translateValueWindDirectionDegToCard(deg) {
@@ -219,7 +241,7 @@ function translateValueWindDirectionDegToCard(deg) {
   }
 }
 
-function setThreeNextDays() {
+function setThreeNextDays(LANG) {
   let today = new Date();
   let todayDate = today.getDate();
 
@@ -233,10 +255,10 @@ function setThreeNextDays() {
   THIRD_DAY_UTC = THIRD_DAY_UTC.setHours(12, 0, 0, 0) / 1000 + 10800;
 
   console.log(FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC);
-  showNameNextThreeDays(FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC);
+  showNameNextThreeDays(LANG, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC);
 }
 
-function showNameNextThreeDays(FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC) {
+function showNameNextThreeDays(LANG, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC) {
   let firstNameDay = document.querySelector(
     '.weather-next-days__first_name-day'
   );
@@ -246,8 +268,8 @@ function showNameNextThreeDays(FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC) {
   let thirdNameDay = document.querySelector(
     '.weather-next-days__third_name-day'
   );
-
-  const daysRus = [
+  
+  const daysRu = [
     'Воскресенье',
     'Понедельник',
     'Вторник',
@@ -266,14 +288,21 @@ function showNameNextThreeDays(FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC) {
     'Friday',
     'Saturday',
   ];
+  
 
   let first = new Date(FIRST_DAY_UTC * 1000).getDay();
   let second = new Date(SECOND_DAY_UTC * 1000).getDay();
   let third = new Date(THIRD_DAY_UTC * 1000).getDay();
-
-  firstNameDay.innerHTML = daysEn[first];
-  secondNameDay.innerHTML = daysEn[second];
-  thirdNameDay.innerHTML = daysEn[third];
+  if (LANG === 'ru') {
+    firstNameDay.innerHTML = daysRu[first];
+    secondNameDay.innerHTML = daysRu[second];
+    thirdNameDay.innerHTML = daysRu[third];
+  } else {
+    firstNameDay.innerHTML = daysEn[first];
+    secondNameDay.innerHTML = daysEn[second];
+    thirdNameDay.innerHTML = daysEn[third];
+  }
+  
 }
 
 function showIconsNextThreeDays(weatherData) {
@@ -381,5 +410,15 @@ function changeTemperatureUnit (temp, currentTemperature){
   });
 }
 
-  
+function translateSearchForm() {
+  let search = document.querySelector('.search-field');
+  let button = document.querySelector('.search-button');
+  if (LANG === 'ru') {
+    search.setAttribute('placeholder','Поиск города');
+    button.innerHTML = 'поиск';
+  } else {
+    search.setAttribute('placeholder','Search city');
+    button.innerHTML = 'SEARCH';
+  }
+}
 

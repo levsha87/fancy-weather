@@ -266,7 +266,7 @@ body {
 }
 
 .weather-today__temperature_number {
-  font-size: 280px;
+  font-size: 260px;
   font-family: Montserrat-Bold;
   display: flex;
   position: relative;
