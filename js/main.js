@@ -164,10 +164,10 @@ async function getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY,LONGITUDE_CURRENT_
   let url = `https://api.opencagedata.com/geocode/v1/json?q=${LATITUDE_CURRENT_CITY.toString()},${LONGITUDE_CURRENT_CITY.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7&language=${LANG}`;
   let response = await fetch(url);
   let place = await response.json();
+  console.log (place);
   let currentCountry = place.results[0].components.country;
-  let currentTown = place.results[0].components.town || place.results[0].components.city;
+  let currentTown = place.results[0].components.hamlet || place.results[0].components.town || place.results[0].components.city;
 
-  
   showCurrentCountryName(currentCountry);
   showCurrentCityName(currentTown);
   showCoordinateCurrentPlace(place);
@@ -473,7 +473,7 @@ function translateSearchForm() {
  async function getCoordinateByPlaceName(CITY_NAME) {
   let response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${CITY_NAME}&key=0f2efca19d1747cd906baa8bb7f8c2f7`);
   let coord = await response.json();
-  
+  console.log(coord);
   LATITUDE_CURRENT_CITY = coord.results[0].geometry.lat;
   LONGITUDE_CURRENT_CITY = coord.results[0].geometry.lng;
   setDAtaLocalStorage(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY, LANG, UNIT_DEGREE);
