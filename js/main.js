@@ -409,9 +409,9 @@ function showIconsNextThreeDays(weatherData) {
   let iconDescriptorSecond = weatherData.list[indexSecondDayUTC].weather[0].icon;
   let iconDescriptorThird = weatherData.list[indexThirdDayUTC].weather[0].icon;
 
-  firstDayIcon.src = `./images/animated/${iconDescriptor}.svg`;
-  secondDayIcon.src = `./images/animated/${iconDescriptor}.svg`;
-  thirdDayIcon.src = `./images/animated/${iconDescriptor}.svg`;
+  firstDayIcon.src = `./images/animated/${iconDescriptorFirst}.svg`;
+  secondDayIcon.src = `./images/animated/${iconDescriptorSecond}.svg`;
+  thirdDayIcon.src = `./images/animated/${iconDescriptorThird}.svg`;
   showTemperatureNumberNextThreeDays(
     weatherData,
     indexFirstDayUTC,
