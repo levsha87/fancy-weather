@@ -1,5 +1,9 @@
 const LANGUAGE = document.querySelector('.language-button-content');
 const BUTTONS_UNIT = document.querySelectorAll('.radio-input');
+const TEMPERATURE_BUTTONS = document.querySelector('.temperature-buttons');
+const SEARCH_FIELD = document.querySelector('.search-field');
+const SEARCH_BUTTON = document.querySelector('.search-button');
+
 
 let LANG = localStorage.getItem('LANG') || 'en';
 let UNIT_DEGREE = localStorage.getItem('UNIT_DEGREE') || 'metric';
@@ -46,9 +50,9 @@ getCoordinateCurrentCityNavigator();
 setDefaultAttributeValueLanguageUnit(LANG, UNIT_DEGREE);
 
 
-let buttons = document.querySelector('.temperature-buttons');
 
-buttons.addEventListener("change", function changeTemperatureUnit(event) {
+
+TEMPERATURE_BUTTONS.addEventListener("change", function changeTemperatureUnit(event) {
     getDataLocalStorage();
     let item = event.target.id;
   if(item === 'temperature-celsius'){
@@ -80,6 +84,21 @@ function setSelectedLanguage (LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
   getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
   setThreeNextDays(LANG);
   translateSearchForm();
+}
+
+SEARCH_BUTTON.addEventListener('click', getDataSearchForm);
+
+SEARCH_FIELD.addEventListener('keydown', (e) => {
+  if (e.keyCode === 13) {
+    e.preventDefault();
+    getDataSearchForm();
+  }
+}); 
+
+function getDataSearchForm(){
+  CITY_NAME = SEARCH_FIELD.value;
+  SEARCH_FIELD.value ='';
+  getCoordinateByPlaceName(CITY_NAME);
 }
 
  
@@ -180,7 +199,7 @@ async function getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY,LONGITUDE_CURRENT_
   let url = `https://api.opencagedata.com/geocode/v1/json?q=${LATITUDE_CURRENT_CITY.toString()},${LONGITUDE_CURRENT_CITY.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7&language=${LANG}`;
   let response = await fetch(url);
   let place = await response.json();
-  console.log (place);
+  
   let currentCountry = place.results[0].components.country;
   let currentTown = place.results[0].components.hamlet || place.results[0].components.town || place.results[0].components.city;
 
@@ -190,8 +209,8 @@ async function getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY,LONGITUDE_CURRENT_
 }
 
 function showCoordinateCurrentPlace(place) {
-  let latitude = document.querySelector('.latitude');
-  let longitude = document.querySelector('.longitude');
+  const latitude = document.querySelector('.latitude');
+  const longitude = document.querySelector('.longitude');
 
   if (LANG === 'ru'){
     latitude.innerHTML = `Широта:  ${place.results[0].annotations.DMS.lat}`;
@@ -207,8 +226,6 @@ async function getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CIT
   let responseWeatherData = await fetch(url);
   let weatherData = await responseWeatherData.json();
 
-
-  console.log(weatherData);
   showCurrentTemperature(weatherData);
   showCurrentWeatherDescribe(weatherData);
   showCurrentIcon(weatherData);
@@ -229,10 +246,10 @@ function showCurrentIcon(weatherData) {
 }
 
 function showCurrentWeatherDescribe(weatherData) {
-  let summury = document.querySelector('.weather-today_summury');
-  let feel = document.querySelector('.weather-today_feel');
-  let wind = document.querySelector('.weather-today_wind');
-  let humidity = document.querySelector('.weather-today_humidity');
+  const summury = document.querySelector('.weather-today_summury');
+  const feel = document.querySelector('.weather-today_feel');
+  const wind = document.querySelector('.weather-today_wind');
+  const humidity = document.querySelector('.weather-today_humidity');
 
   summury.innerHTML = weatherData.list[0].weather[0].description.toUpperCase();
 
@@ -335,15 +352,9 @@ function setThreeNextDays(LANG) {
 }
 
 function showNameNextThreeDays(LANG, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC) {
-  let firstNameDay = document.querySelector(
-    '.weather-next-days__first_name-day'
-  );
-  let secondNameDay = document.querySelector(
-    '.weather-next-days__second_name-day'
-  );
-  let thirdNameDay = document.querySelector(
-    '.weather-next-days__third_name-day'
-  );
+  const firstNameDay = document.querySelector('.weather-next-days__first_name-day');
+  const secondNameDay = document.querySelector('.weather-next-days__second_name-day');
+  const thirdNameDay = document.querySelector('.weather-next-days__third_name-day');
   
   const daysRu = [
     'Воскресенье',
@@ -365,10 +376,10 @@ function showNameNextThreeDays(LANG, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UT
     'Saturday',
   ];
   
-
   let first = new Date(FIRST_DAY_UTC * 1000).getDay();
   let second = new Date(SECOND_DAY_UTC * 1000).getDay();
   let third = new Date(THIRD_DAY_UTC * 1000).getDay();
+
   if (LANG === 'ru') {
     firstNameDay.innerHTML = daysRu[first];
     secondNameDay.innerHTML = daysRu[second];
@@ -378,85 +389,47 @@ function showNameNextThreeDays(LANG, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UT
     secondNameDay.innerHTML = daysEn[second];
     thirdNameDay.innerHTML = daysEn[third];
   }
-  
 }
 
 function showIconsNextThreeDays(weatherData) {
-  let indexFirstDayUTC = weatherData.list.findIndex(
-    (item) => item.dt === FIRST_DAY_UTC
-  );
-  let indexSecondDayUTC = weatherData.list.findIndex(
-    (item) => item.dt === SECOND_DAY_UTC
-  );
-  let indexThirdDayUTC = weatherData.list.findIndex(
-    (item) => item.dt === THIRD_DAY_UTC
-  );
+  let indexFirstDayUTC = weatherData.list.findIndex( (item) => item.dt === FIRST_DAY_UTC );
+  let indexSecondDayUTC = weatherData.list.findIndex( (item) => item.dt === SECOND_DAY_UTC );
+  let indexThirdDayUTC = weatherData.list.findIndex( (item) => item.dt === THIRD_DAY_UTC );
 
-  let firstDayIcon = document.querySelector(
-    '.weather-next-days__first_icons-img'
-  );
-  let secondDayIcon = document.querySelector(
-    '.weather-next-days__second_icons-img'
-  );
-  let thirdDayIcon = document.querySelector(
-    '.weather-next-days__third_icons-img'
-  );
+  const firstDayIcon = document.querySelector('.weather-next-days__first_icons-img');
+  const secondDayIcon = document.querySelector('.weather-next-days__second_icons-img');
+  const thirdDayIcon = document.querySelector('.weather-next-days__third_icons-img');
 
-  let iconDescriptorFirst = weatherData.list[indexFirstDayUTC].weather[0].icon;
-  let iconDescriptorSecond = weatherData.list[indexSecondDayUTC].weather[0].icon;
-  let iconDescriptorThird = weatherData.list[indexThirdDayUTC].weather[0].icon;
+  const iconDescriptorFirst = weatherData.list[indexFirstDayUTC].weather[0].icon;
+  const iconDescriptorSecond = weatherData.list[indexSecondDayUTC].weather[0].icon;
+  const iconDescriptorThird = weatherData.list[indexThirdDayUTC].weather[0].icon;
 
   firstDayIcon.src = `./images/animated/${iconDescriptorFirst}.svg`;
   secondDayIcon.src = `./images/animated/${iconDescriptorSecond}.svg`;
   thirdDayIcon.src = `./images/animated/${iconDescriptorThird}.svg`;
-  showTemperatureNumberNextThreeDays(
-    weatherData,
-    indexFirstDayUTC,
-    indexSecondDayUTC,
-    indexThirdDayUTC
-  );
+
+  showTemperatureNumberNextThreeDays(weatherData, indexFirstDayUTC, indexSecondDayUTC, indexThirdDayUTC);
 }
 
-function showTemperatureNumberNextThreeDays(
-  weatherData,
-  indexFirstDayUTC,
-  indexSecondDayUTC,
-  indexThirdDayUTC
-) {
-  let firstDayTempratureNumber = document.querySelector(
-    '.weather-next-days__first_temperature_value'
-  );
-  let secondDayTempratureNumber = document.querySelector(
-    '.weather-next-days__second_temperature_value'
-  );
-  let thirdDayTempratureNumber = document.querySelector(
-    '.weather-next-days__third_temperature_value'
-  );
+function showTemperatureNumberNextThreeDays( weatherData, indexFirstDayUTC, indexSecondDayUTC, indexThirdDayUTC) {
+  const firstDayTempratureNumber = document.querySelector('.weather-next-days__first_temperature_value');
+  const secondDayTempratureNumber = document.querySelector('.weather-next-days__second_temperature_value');
+  const thirdDayTempratureNumber = document.querySelector('.weather-next-days__third_temperature_value');
 
-  firstDayTempratureNumber.innerHTML = Math.trunc(
-    weatherData.list[indexFirstDayUTC].main.temp
-  );
-  secondDayTempratureNumber.innerHTML = Math.trunc(
-    weatherData.list[indexSecondDayUTC].main.temp
-  );
-  thirdDayTempratureNumber.innerHTML = Math.trunc(
-    weatherData.list[indexThirdDayUTC].main.temp
-  );
+  firstDayTempratureNumber.innerHTML = Math.trunc(weatherData.list[indexFirstDayUTC].main.temp);
+  secondDayTempratureNumber.innerHTML = Math.trunc(weatherData.list[indexSecondDayUTC].main.temp);
+  thirdDayTempratureNumber.innerHTML = Math.trunc(weatherData.list[indexThirdDayUTC].main.temp);
 }
 
 async function changeBackkgroundImage() {
-  let response = await fetch(
-    'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=76d735b7381e9ed633854a67b69d8387&tags=nature,weather,dark&tag_mode=all&extras=url_h&format=json&nojsoncallback=1'
-  );
+  let response = await fetch('https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=76d735b7381e9ed633854a67b69d8387&tags=nature,weather,dark&tag_mode=all&extras=url_h&format=json&nojsoncallback=1');
   let images = await response.json();
-  let item =
-    images.photos.photo[Math.floor(Math.random() * images.photos.photo.length)];
-  urlPhoto = item.url_h;
-  document.documentElement.style.background = `url(${urlPhoto})`;
+  let item = images.photos.photo[Math.floor(Math.random() * images.photos.photo.length)].url_h;
+  document.documentElement.style.background = `url(${item})`;
 }
 
 function changeBackgroundHandly() {
-  let refreshButton = document.querySelector('.refresh-button');
+  const refreshButton = document.querySelector('.refresh-button');
   refreshButton.addEventListener('click', changeBackkgroundImageClickRefreshButton);
   refreshButton.addEventListener('animationend', changeBackkgroundImageRefreshButtonAnimationEnd);
 
@@ -470,49 +443,26 @@ function changeBackgroundHandly() {
   }
 }
 
-
-
 function translateSearchForm() {
-  let search = document.querySelector('.search-field');
-  let button = document.querySelector('.search-button');
   if (LANG === 'ru') {
-    search.setAttribute('placeholder','Поиск города');
-    button.innerHTML = 'поиск';
+    SEARCH_FIELD.setAttribute('placeholder','Город Район Область');
+    SEARCH_BUTTON.innerHTML = 'поиск';
   } else {
-    search.setAttribute('placeholder','Search city');
-    button.innerHTML = 'SEARCH';
+    SEARCH_FIELD.setAttribute('placeholder','Town Region');
+    SEARCH_BUTTON.innerHTML = 'SEARCH';
   }
 }
-
-
 
  async function getCoordinateByPlaceName(CITY_NAME) {
   let response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${CITY_NAME}&key=0f2efca19d1747cd906baa8bb7f8c2f7`);
   let coord = await response.json();
-  console.log(coord);
+  
   LATITUDE_CURRENT_CITY = coord.results[0].geometry.lat;
   LONGITUDE_CURRENT_CITY = coord.results[0].geometry.lng;
+
   setDAtaLocalStorage(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY, LANG, UNIT_DEGREE);
   initMap(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
   getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
   getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
 }
 
-
-let searchButton = document.querySelector('.search-button');
-let searchField = document.querySelector('.search-field');
-
-searchButton.addEventListener('click', getDataSearchForm);
-
-searchField.addEventListener('keydown', (e) => {
-  if (e.keyCode === 13) {
-    e.preventDefault();
-    getDataSearchForm();
-  }
-}); 
-
-function getDataSearchForm(){
-  CITY_NAME = searchField.value;
-  searchField.value ='';
-  getCoordinateByPlaceName(CITY_NAME);
-}
