@@ -1,4 +1,4 @@
-const LANGUAGE = document.querySelector('.dropdown-content');
+const LANGUAGE = document.querySelector('.language-button-content');
 const BUTTONS_UNIT = document.querySelectorAll('.radio-input');
 
 let LANG = localStorage.getItem('LANG') || 'en';

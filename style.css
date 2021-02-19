@@ -147,8 +147,8 @@ body {
   border-radius: 0 5px 5px 0;
 }
 
-/* Dropdown Button */
-.dropbtn {
+/* Language Button */
+.language-button {
   appearance: none;
   background: rgba(174, 181, 185, 0.5);
   color: white;
@@ -163,7 +163,7 @@ body {
   position: relative;
 }
 
-.dropbtn:before {
+.language-button:before {
   position: absolute;
   top: 25%;
   right: 5%;
@@ -173,7 +173,7 @@ body {
   color: white;
 }
 
-.dropdown-content {
+.language-button-content {
   appearance: none;
   width: 100%;
   height: 100%;
@@ -187,11 +187,11 @@ body {
   cursor: pointer;
 }
 
-.dropdown-content:focus {
+.language-button-content:focus {
   outline: 0;
 }
 
-.dropdown-content option {
+.language-button-content option {
   background: rgba(174, 181, 185, 0.5);
 }
 
@@ -274,9 +274,9 @@ body {
 
 .weather-today__temperature_number img {
   position: absolute;
-  width: 250px;
-  right: -165px;
-  top: -90px;
+  width: 260px;
+  right: -180px;
+  top: -80px;
   z-index: -1;
 }
 
@@ -337,7 +337,7 @@ body {
 
 .weather-next-days_icons {
   position: absolute;
-  top: -15%;
+  top: 10%;
   left: 30%;
   z-index: -1;
 }
