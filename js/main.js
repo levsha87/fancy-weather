@@ -228,7 +228,7 @@ function showCurrentTemperature(weatherData) {
 function showCurrentIcon(weatherData) {
   let currentIcon = document.querySelector('.current-icon');
   let iconDescriptor = weatherData.list[0].weather[0].icon;
-  currentIcon.src = `http://openweathermap.org/img/wn/${iconDescriptor}@2x.png`;
+  currentIcon.src = `./images/animated/${iconDescriptor}.svg`;
 }
 
 function showCurrentWeatherDescribe(weatherData) {
