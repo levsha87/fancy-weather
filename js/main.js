@@ -1,4 +1,6 @@
 const LANGUAGE = document.querySelector('.dropdown-content');
+const BUTTONS_UNIT = document.querySelectorAll('.radio-input');
+
 let LANG = localStorage.getItem('LANG') || 'en';
 let UNIT_DEGREE = localStorage.getItem('UNIT_DEGREE') || 'metric';
 let FIRST_DAY_UTC;
@@ -7,6 +9,22 @@ let THIRD_DAY_UTC;
 let CITY_NAME;
 let LATITUDE_CURRENT_CITY;
 let LONGITUDE_CURRENT_CITY;
+
+function setDefaultAttributeValueLanguageUnit(LANG, UNIT_DEGREE) {
+  const options = document.querySelectorAll('option');
+
+  if(LANGUAGE.value === LANG) {
+    options[0].setAttribute('selected', true);
+  } else {
+    options[1].setAttribute('selected', true);
+  } 
+
+  if(UNIT_DEGREE === 'metric') {
+    BUTTONS_UNIT[0].checked = true;
+  } else {
+    BUTTONS_UNIT[1].checked = true;
+  } 
+}
 
 function getDataLocalStorage() {
   LATITUDE_CURRENT_CITY = localStorage.getItem('LATITUDE_CURRENT_CITY');
@@ -25,6 +43,7 @@ function setDAtaLocalStorage(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY, LANG
 changeBackkgroundImage();
 changeBackgroundHandly();
 getCoordinateCurrentCityNavigator();
+setDefaultAttributeValueLanguageUnit(LANG, UNIT_DEGREE);
 
 
 let buttons = document.querySelector('.temperature-buttons');
