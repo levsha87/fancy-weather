@@ -85,23 +85,20 @@ function setSelectedLanguage (LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
  
 // Initialize and add the map
 function initMap(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
-  // The location of Minsk
   const city = { lat: LATITUDE_CURRENT_CITY, lng: LONGITUDE_CURRENT_CITY };
-  // The map, centered at minsk
-  const map = new google.maps.Map(
-    document.querySelector('.user-location__geolocation'),
-    {
-      zoom: 7,
-      center: city,
-    }
-  );
 
-  // The marker, positioned at city
-  const marker = new google.maps.Marker({
-    position: city,
-    map: map,
+  const map = new mapboxgl.Map({
+  container: document.querySelector('.user-location__geolocation'), // container id
+  style: 'mapbox://styles/mapbox/streets-v11', // style URL
+  center: city, // starting position [lng, lat]
+  zoom: 7 // starting zoom
   });
+
+  const marker = new mapboxgl.Marker()
+    .setLngLat(city)
+    .addTo(map);
 }
+
 
 /*--------------------get current month, day, time---------------*/
 
