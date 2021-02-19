@@ -591,7 +591,6 @@ body {
     width: 50%;
   }
 
-
   .user-location__geolocation {
     width: 230px;
     height: 230px;
@@ -601,5 +600,228 @@ body {
     width: 90%;
     font-size: 14px;
     padding-top: 20px;
+  }
+}
+
+/* ---------------------------стили для экранов max-width 479px-----------------------*/
+
+@media screen and (max-width: 479px) {
+
+  body {
+    width: 320px;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .menu {
+    flex-basis: 50px;
+  }
+
+
+  .menu > * {
+    flex-basis: 30px;
+  }
+
+  .refresh-button {
+    width: 30px;
+    height: 30px;
+  }
+
+  .refresh-button:before {
+    top: 30%;
+    left: 35%;
+    font-size: 12px;
+  }
+
+  /* Language Button */
+  .language-button {
+    padding-right: 8px;
+    font-size: 12px;
+    width: 60px;
+    height: 30px;
+  }
+
+  .language-button:before {
+    font-size: 12px;
+    top: 30%;
+    right: 5%;
+  }
+
+  .language-button-content {
+    font-size: 12px;
+    padding-left: 2px;
+  }
+
+  .temperature-buttons_radio {
+    font-size: 20px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .radio-input {
+    width: 30px;
+    height: 30px;
+  }
+
+  .radio-input:checked + .radio-label::before {
+    content: '';
+    width: 30px;
+    height: 30px;
+  }
+
+  .search-form {
+    padding-top: 15px;
+    flex-basis: 50px;
+  }
+
+  .search-field {
+    width: 100%;
+    height: 30px;
+  }
+
+  .search-button {
+    width: 72px;
+    height: 30px;
+    font-size: 10px;
+    top: 15px;
+    right: 0px;
+  }
+
+  .search-button:before {
+    content: '\f002';
+    font-family: FontAwesome;
+    font-size: 10px;
+    color: #f9f0da;
+    padding-right: 3px;
+    
+  }
+  /*--------------------------------main---------------------------------------------*/
+
+  .main {
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /*--------------------------------description of weather today and three next day------------------------*/
+
+  .weather-city-information {
+    width: 80%;
+  }
+
+  .city-time {
+    display: flex;
+    flex-direction: column-reverse;
+    padding-top: 20px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .city-time h1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .city-time > * {
+    font-size: 20px;
+  }
+
+  .weather-today {
+    flex-wrap: wrap;
+  }
+
+  .weather-today__temperature_number {
+    font-size: 140px;
+    width: 80%;
+  }
+
+  .weather-today__temperature_number img {
+    width: 180px;
+    right: -80px;
+    top: -60px;
+  }
+
+  .weather-today__temperature_sign-degree {
+    font-size: 70px;
+    padding-top: 4%;
+  }
+
+  .weather-today__description {
+    font-size: 16px;
+    padding-top: 0px;
+    width: 80%;
+    letter-spacing: 1.5px;
+    align-items: center;
+  }
+
+  .weather-next-days {
+    padding-top: 20px;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .weather-next-days_item {
+    display: flex;
+    flex-basis: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .weather-next-days_name-day {
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .weather-next-days_temperature_number {
+    font-size: 45px;
+    padding-left: 10px;
+    flex-basis: 70%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .weather-next-days_sign-degree {
+    font-size: 30px;
+  }
+
+  .weather-next-days_icons {
+    position: absolute;
+    top: 15%;
+    left: 40%;
+    z-index: -1;
+  }
+
+  .weather-next-days_icons img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .user-location {
+    width: 80%;
+    align-items: center;
+  }
+
+  .user-location__geolocation {
+    width: 230px;
+    height: 230px;
+  }
+
+  .user-location__coordinates {
+    width: 90%;
+    font-size: 14px;
+    padding-top: 5px;
+    padding-bottom: 20px;
   }
 }
