@@ -66,13 +66,11 @@ function changeTemperatureUnit(event) {
 if(item === 'temperature-celsius'){
     UNIT_DEGREE = 'metric';
     localStorage.setItem('UNIT_DEGREE', UNIT_DEGREE);
-    getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
-    getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+    getPlaceNameWeatherDataPlace(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
   } else {
     UNIT_DEGREE = 'imperial';
     localStorage.setItem('UNIT_DEGREE', UNIT_DEGREE);
-    getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
-    getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+    getPlaceNameWeatherDataPlace(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
   }
 }
 
@@ -88,8 +86,7 @@ function setSelectedLanguage (LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
     getCurrentFullTime(LANG);
   }, 1000);
   
-  getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
-  getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+  getPlaceNameWeatherDataPlace(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
   translateSearchForm();
 }
 
@@ -194,6 +191,11 @@ function getCoordinateCurrentCityNavigator() {
   }
 }
 
+async function getPlaceNameWeatherDataPlace(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY){
+  await getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY,LONGITUDE_CURRENT_CITY );
+  await getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+}
+
 async function getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY,LONGITUDE_CURRENT_CITY ) {
   const url = `https://api.opencagedata.com/geocode/v1/json?q=${LATITUDE_CURRENT_CITY.toString()},${LONGITUDE_CURRENT_CITY.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7&language=${LANG}`;
   const response = await fetch(url);
@@ -223,11 +225,15 @@ async function getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CIT
   const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${LATITUDE_CURRENT_CITY.toString()}&lon=${LONGITUDE_CURRENT_CITY.toString()}&units=${UNIT_DEGREE}&appid=0f57bad2b641ca690297cce9e9f87665&lang=${LANG}`;
   const responseWeatherData = await fetch(url);
   const weatherData = await responseWeatherData.json();
-  console.log(weatherData, weatherData.city.timezone);
+ 
+  showCurrentWeatherPlace(weatherData);
+  setThreeNextDays(LANG, weatherData);
+}
+
+function showCurrentWeatherPlace(weatherData){
   showCurrentTemperature(weatherData);
   showCurrentWeatherDescribe(weatherData);
   showCurrentIcon(weatherData);
-  setThreeNextDays(LANG, weatherData);
 }
 
 function showCurrentTemperature(weatherData) {
@@ -420,9 +426,9 @@ function showTemperatureNumberNextThreeDays( weatherData, indexFirstDayUTC, inde
 }
 
 async function getBackkgroundImage() {
-  let response = await fetch('https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=76d735b7381e9ed633854a67b69d8387&tags=nature,weather,dark&tag_mode=all&extras=url_h&format=json&nojsoncallback=1');
-  let images = await response.json();
-  let item = images.photos.photo[Math.floor(Math.random() * images.photos.photo.length)].url_h;
+  const response = await fetch('https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=76d735b7381e9ed633854a67b69d8387&tags=nature,weather,dark&tag_mode=all&extras=url_h&format=json&nojsoncallback=1');
+  const images = await response.json();
+  const item = images.photos.photo[Math.floor(Math.random() * images.photos.photo.length)].url_h;
   document.documentElement.style.background = `url(${item})`;
 }
 
@@ -452,15 +458,14 @@ function translateSearchForm() {
 }
 
  async function getCoordinateByPlaceName(CITY_NAME) {
-  let response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${CITY_NAME}&key=0f2efca19d1747cd906baa8bb7f8c2f7`);
-  let coord = await response.json();
+  const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${CITY_NAME}&key=0f2efca19d1747cd906baa8bb7f8c2f7`);
+  const coord = await response.json();
   
   LATITUDE_CURRENT_CITY = coord.results[0].geometry.lat;
   LONGITUDE_CURRENT_CITY = coord.results[0].geometry.lng;
 
   setDAtaLocalStorage(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY, LANG, UNIT_DEGREE);
   initMap(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
-  getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
-  getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+  getPlaceNameWeatherDataPlace(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
 }
 
