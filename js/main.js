@@ -44,7 +44,7 @@ function setDAtaLocalStorage(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY, LANG
   localStorage.setItem('UNIT_DEGREE', UNIT_DEGREE);
 }
 
-changeBackkgroundImage();
+getBackkgroundImage();
 changeBackgroundHandly();
 getCoordinateCurrentCityNavigator();
 setDefaultAttributeValueLanguageUnit(LANG, UNIT_DEGREE);
@@ -421,7 +421,7 @@ function showTemperatureNumberNextThreeDays( weatherData, indexFirstDayUTC, inde
   thirdDayTempratureNumber.innerHTML = Math.trunc(weatherData.list[indexThirdDayUTC].main.temp);
 }
 
-async function changeBackkgroundImage() {
+async function getBackkgroundImage() {
   let response = await fetch('https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=76d735b7381e9ed633854a67b69d8387&tags=nature,weather,dark&tag_mode=all&extras=url_h&format=json&nojsoncallback=1');
   let images = await response.json();
   let item = images.photos.photo[Math.floor(Math.random() * images.photos.photo.length)].url_h;
@@ -430,15 +430,15 @@ async function changeBackkgroundImage() {
 
 function changeBackgroundHandly() {
   const refreshButton = document.querySelector('.refresh-button');
-  refreshButton.addEventListener('click', changeBackkgroundImageClickRefreshButton);
-  refreshButton.addEventListener('animationend', changeBackkgroundImageRefreshButtonAnimationEnd);
+  refreshButton.addEventListener('click', addClassBackkgroundImageClickRefreshButton);
+  refreshButton.addEventListener('animationend', deleteBackkgroundImageAnimationEndRefreshButton);
 
-  function changeBackkgroundImageClickRefreshButton() {
+  function addClassBackkgroundImageClickRefreshButton() {
     refreshButton.classList.add('active');
-    changeBackkgroundImage();
+    getBackkgroundImage();
   }
 
-  function changeBackkgroundImageRefreshButtonAnimationEnd() {
+  function deleteBackkgroundImageAnimationEndRefreshButton() {
     refreshButton.classList.remove('active');
   }
 }
