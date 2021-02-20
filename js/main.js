@@ -3,6 +3,7 @@ const BUTTONS_UNIT = document.querySelectorAll('.radio-input');
 const TEMPERATURE_BUTTONS = document.querySelector('.temperature-buttons');
 const SEARCH_FIELD = document.querySelector('.search-field');
 const SEARCH_BUTTON = document.querySelector('.search-button');
+const MAP_CONTAINER = document.querySelector('.user-location__geolocation');
 
 
 let LANG = localStorage.getItem('LANG') || 'en';
@@ -50,12 +51,19 @@ getCoordinateCurrentCityNavigator();
 setDefaultAttributeValueLanguageUnit(LANG, UNIT_DEGREE);
 
 
+TEMPERATURE_BUTTONS.addEventListener("change", (event) => changeTemperatureUnit(event) );
+LANGUAGE.addEventListener("change", changeLanguage);
+SEARCH_BUTTON.addEventListener('click', getDataSearchForm);
+SEARCH_FIELD.addEventListener('keydown', (e) => getDataSearchFormPressEnter(e)); 
 
 
-TEMPERATURE_BUTTONS.addEventListener("change", function changeTemperatureUnit(event) {
-    getDataLocalStorage();
-    let item = event.target.id;
-  if(item === 'temperature-celsius'){
+
+
+function changeTemperatureUnit(event) {
+  const item = event.target.id;
+  getDataLocalStorage();
+
+if(item === 'temperature-celsius'){
     UNIT_DEGREE = 'metric';
     localStorage.setItem('UNIT_DEGREE', UNIT_DEGREE);
     getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
@@ -66,13 +74,13 @@ TEMPERATURE_BUTTONS.addEventListener("change", function changeTemperatureUnit(ev
     getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
     getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
   }
-});
+}
 
-LANGUAGE.addEventListener("change", function changeLanguage(){
+function changeLanguage(){
   LANG = this.value;
   localStorage.setItem('LANG', LANG);
   setSelectedLanguage(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
-});
+}
 
 function setSelectedLanguage (LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
   getDataLocalStorage();
@@ -82,18 +90,15 @@ function setSelectedLanguage (LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
   
   getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
   getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
-  setThreeNextDays(LANG);
   translateSearchForm();
 }
 
-SEARCH_BUTTON.addEventListener('click', getDataSearchForm);
-
-SEARCH_FIELD.addEventListener('keydown', (e) => {
+function getDataSearchFormPressEnter(e){
   if (e.keyCode === 13) {
     e.preventDefault();
     getDataSearchForm();
   }
-}); 
+}
 
 function getDataSearchForm(){
   CITY_NAME = SEARCH_FIELD.value;
@@ -101,23 +106,21 @@ function getDataSearchForm(){
   getCoordinateByPlaceName(CITY_NAME);
 }
 
- 
 // Initialize and add the map
 function initMap(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
   const city = { lat: LATITUDE_CURRENT_CITY, lng: LONGITUDE_CURRENT_CITY };
 
   const map = new mapboxgl.Map({
-  container: document.querySelector('.user-location__geolocation'), // container id
-  style: 'mapbox://styles/mapbox/streets-v11', // style URL
-  center: city, // starting position [lng, lat]
-  zoom: 7 // starting zoom
+  container: MAP_CONTAINER,
+  style: 'mapbox://styles/mapbox/streets-v11',
+  center: city, 
+  zoom: 7
   });
 
   const marker = new mapboxgl.Marker()
     .setLngLat(city)
     .addTo(map);
 }
-
 
 /*--------------------get current month, day, time---------------*/
 
@@ -147,28 +150,24 @@ function getCurrentFullTime(LANG) {
 
 
 function showCurrentTime(month, dateToday, dayToday, timeNow) {
-  const monthEl = document.querySelector('.month');
-  const dateTodayEl = document.querySelector('.date-today');
-  const dayTodayEl = document.querySelector('.day-today');
-  const timeEl = document.querySelector('.time');
+  const monthElement = document.querySelector('.month');
+  const dateTodayElement = document.querySelector('.date-today');
+  const dayTodayElement = document.querySelector('.day-today');
+  const timeElement = document.querySelector('.time');
 
-  monthEl.innerHTML = month;
-  dateTodayEl.innerHTML = dateToday;
-  dayTodayEl.innerHTML = dayToday;
-  timeEl.innerHTML = timeNow;
+  monthElement.innerHTML = month;
+  dateTodayElement.innerHTML = dateToday;
+  dayTodayElement.innerHTML = dayToday;
+  timeElement.innerHTML = timeNow;
 }
-
-
 
 /*--------------------get geolocation--------------------*/
 
-function showCurrentCountryName(currentCountry) {
+function showCurrentCountryNameCityName(currentCountry, currentTown) {
   const countryNameElement = document.querySelector('.country-name');
-  countryNameElement.innerHTML = currentCountry.toUpperCase();
-}
-
-function showCurrentCityName(currentTown) {
   const cityNameElement = document.querySelector('.city-name');
+
+  countryNameElement.innerHTML = currentCountry.toUpperCase();
   cityNameElement.innerHTML = currentTown.toUpperCase();
 }
 
@@ -196,15 +195,14 @@ function getCoordinateCurrentCityNavigator() {
 }
 
 async function getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY,LONGITUDE_CURRENT_CITY ) {
-  let url = `https://api.opencagedata.com/geocode/v1/json?q=${LATITUDE_CURRENT_CITY.toString()},${LONGITUDE_CURRENT_CITY.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7&language=${LANG}`;
-  let response = await fetch(url);
-  let place = await response.json();
+  const url = `https://api.opencagedata.com/geocode/v1/json?q=${LATITUDE_CURRENT_CITY.toString()},${LONGITUDE_CURRENT_CITY.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7&language=${LANG}`;
+  const response = await fetch(url);
+  const place = await response.json();
   
-  let currentCountry = place.results[0].components.country;
-  let currentTown = place.results[0].components.hamlet || place.results[0].components.town || place.results[0].components.city;
+  const currentCountry = place.results[0].components.country;
+  const currentTown = place.results[0].components.hamlet || place.results[0].components.town || place.results[0].components.city;
 
-  showCurrentCountryName(currentCountry);
-  showCurrentCityName(currentTown);
+  showCurrentCountryNameCityName(currentCountry, currentTown);
   showCoordinateCurrentPlace(place);
 }
 
@@ -222,26 +220,24 @@ function showCoordinateCurrentPlace(place) {
 }
 
 async function getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
-  let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${LATITUDE_CURRENT_CITY.toString()}&lon=${LONGITUDE_CURRENT_CITY.toString()}&units=${UNIT_DEGREE}&appid=0f57bad2b641ca690297cce9e9f87665&lang=${LANG}`;
-  let responseWeatherData = await fetch(url);
-  let weatherData = await responseWeatherData.json();
-
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${LATITUDE_CURRENT_CITY.toString()}&lon=${LONGITUDE_CURRENT_CITY.toString()}&units=${UNIT_DEGREE}&appid=0f57bad2b641ca690297cce9e9f87665&lang=${LANG}`;
+  const responseWeatherData = await fetch(url);
+  const weatherData = await responseWeatherData.json();
+  console.log(weatherData, weatherData.city.timezone);
   showCurrentTemperature(weatherData);
   showCurrentWeatherDescribe(weatherData);
   showCurrentIcon(weatherData);
-  showIconsNextThreeDays(weatherData);
+  setThreeNextDays(LANG, weatherData);
 }
 
 function showCurrentTemperature(weatherData) {
-  let currentTemperature = document.querySelector(
-    '.weather-today__temperature_number_value'
-  );
+  const currentTemperature = document.querySelector('.weather-today__temperature_number_value');
   currentTemperature.innerHTML = Math.trunc(weatherData.list[0].main.temp);
 }
 
 function showCurrentIcon(weatherData) {
-  let currentIcon = document.querySelector('.current-icon');
-  let iconDescriptor = weatherData.list[0].weather[0].icon;
+  const currentIcon = document.querySelector('.current-icon');
+  const iconDescriptor = weatherData.list[0].weather[0].icon;
   currentIcon.src = `./images/animated/${iconDescriptor}.svg`;
 }
 
@@ -265,90 +261,92 @@ function showCurrentWeatherDescribe(weatherData) {
 
 function translateValueWindDirectionDegToCard(deg, LANG) {
   if (LANG === 'ru') {
-    if (deg > 11.25 && deg <= 33.75) {
-    return 'ССВ';
-    } else if (deg > 33.75 && deg <= 56.25) {
-      return 'СВ';
-    } else if (deg > 56.25 && deg <= 78.75) {
-      return 'ВСВ';
-    } else if (deg > 78.75 && deg <= 101.25) {
-      return 'В';
-    } else if (deg > 101.25 && deg <= 123.75) {
-      return 'ВЮВ';
-    } else if (deg > 123.75 && deg <= 146.25) {
-      return 'ЮВ';
-    } else if (deg > 146.25 && deg <= 168.75) {
-      return 'ЮЮВ';
-    } else if (deg > 168.75 && deg <= 191.25) {
-      return 'Ю';
-    } else if (deg > 191.25 && deg <= 213.75) {
-      return 'ЮЮЗ';
-    } else if (deg > 213.75 && deg <= 236.25) {
-      return 'ЮЗ';
-    } else if (deg > 236.25 && deg <= 258.75) {
-      return 'ЗЮЗ';
-    } else if (deg > 258.75 && deg <= 281.25) {
-      return 'З';
-    } else if (deg > 281.25 && deg <= 303.75) {
-      return 'ЗСЗ';
-    } else if (deg > 303.75 && deg <= 326.25) {
-      return 'СЗ';
-    } else if (deg > 326.25 && deg <= 348.75) {
-      return 'ССЗ';
-    } else {
-      return 'С';
-    }
+      if (deg > 11.25 && deg <= 33.75) {
+        return 'ССВ';
+      } else if (deg > 33.75 && deg <= 56.25) {
+        return 'СВ';
+      } else if (deg > 56.25 && deg <= 78.75) {
+        return 'ВСВ';
+      } else if (deg > 78.75 && deg <= 101.25) {
+        return 'В';
+      } else if (deg > 101.25 && deg <= 123.75) {
+        return 'ВЮВ';
+      } else if (deg > 123.75 && deg <= 146.25) {
+        return 'ЮВ';
+      } else if (deg > 146.25 && deg <= 168.75) {
+        return 'ЮЮВ';
+      } else if (deg > 168.75 && deg <= 191.25) {
+        return 'Ю';
+      } else if (deg > 191.25 && deg <= 213.75) {
+        return 'ЮЮЗ';
+      } else if (deg > 213.75 && deg <= 236.25) {
+        return 'ЮЗ';
+      } else if (deg > 236.25 && deg <= 258.75) {
+        return 'ЗЮЗ';
+      } else if (deg > 258.75 && deg <= 281.25) {
+        return 'З';
+      } else if (deg > 281.25 && deg <= 303.75) {
+        return 'ЗСЗ';
+      } else if (deg > 303.75 && deg <= 326.25) {
+        return 'СЗ';
+      } else if (deg > 326.25 && deg <= 348.75) {
+        return 'ССЗ';
+      } else {
+        return 'С';
+      }
   } else {
-    if (deg > 11.25 && deg <= 33.75) {
-      return 'NNE';
-    } else if (deg > 33.75 && deg <= 56.25) {
-      return 'NE';
-    } else if (deg > 56.25 && deg <= 78.75) {
-      return 'ENE';
-    } else if (deg > 78.75 && deg <= 101.25) {
-      return 'E';
-    } else if (deg > 101.25 && deg <= 123.75) {
-      return 'ESE';
-    } else if (deg > 123.75 && deg <= 146.25) {
-      return 'SE';
-    } else if (deg > 146.25 && deg <= 168.75) {
-      return 'SSE';
-    } else if (deg > 168.75 && deg <= 191.25) {
-      return 'S';
-    } else if (deg > 191.25 && deg <= 213.75) {
-      return 'SSW';
-    } else if (deg > 213.75 && deg <= 236.25) {
-      return 'SW';
-    } else if (deg > 236.25 && deg <= 258.75) {
-      return 'WSW';
-    } else if (deg > 258.75 && deg <= 281.25) {
-      return 'W';
-    } else if (deg > 281.25 && deg <= 303.75) {
-      return 'WNW';
-    } else if (deg > 303.75 && deg <= 326.25) {
-      return 'NW';
-    } else if (deg > 326.25 && deg <= 348.75) {
-      return 'NNW';
-    } else {
-      return 'N';
-    }
+      if (deg > 11.25 && deg <= 33.75) {
+        return 'NNE';
+      } else if (deg > 33.75 && deg <= 56.25) {
+        return 'NE';
+      } else if (deg > 56.25 && deg <= 78.75) {
+        return 'ENE';
+      } else if (deg > 78.75 && deg <= 101.25) {
+        return 'E';
+      } else if (deg > 101.25 && deg <= 123.75) {
+        return 'ESE';
+      } else if (deg > 123.75 && deg <= 146.25) {
+        return 'SE';
+      } else if (deg > 146.25 && deg <= 168.75) {
+        return 'SSE';
+      } else if (deg > 168.75 && deg <= 191.25) {
+        return 'S';
+      } else if (deg > 191.25 && deg <= 213.75) {
+        return 'SSW';
+      } else if (deg > 213.75 && deg <= 236.25) {
+        return 'SW';
+      } else if (deg > 236.25 && deg <= 258.75) {
+        return 'WSW';
+      } else if (deg > 258.75 && deg <= 281.25) {
+        return 'W';
+      } else if (deg > 281.25 && deg <= 303.75) {
+        return 'WNW';
+      } else if (deg > 303.75 && deg <= 326.25) {
+        return 'NW';
+      } else if (deg > 326.25 && deg <= 348.75) {
+        return 'NNW';
+      } else {
+        return 'N';
+      }
   }
 }
 
-function setThreeNextDays(LANG) {
-  let today = new Date();
-  let todayDate = today.getDate();
+function setThreeNextDays(LANG, weatherData) {
+  const currentCityTimeZone = weatherData.city.timezone;
+  const today = new Date();
+  const todayDate = today.getDate();
 
   FIRST_DAY_UTC = new Date(today.setDate(`${todayDate + 1}`));
-  FIRST_DAY_UTC = FIRST_DAY_UTC.setHours(12, 0, 0, 0) / 1000 + 10800;
+  FIRST_DAY_UTC = FIRST_DAY_UTC.setHours(12, 0, 0, 0) / 1000 + currentCityTimeZone;
 
   SECOND_DAY_UTC = new Date(today.setDate(`${todayDate + 2}`));
-  SECOND_DAY_UTC = SECOND_DAY_UTC.setHours(12, 0, 0, 0) / 1000 + 10800;
+  SECOND_DAY_UTC = SECOND_DAY_UTC.setHours(12, 0, 0, 0) / 1000 + currentCityTimeZone;
 
   THIRD_DAY_UTC = new Date(today.setDate(`${todayDate + 3}`));
-  THIRD_DAY_UTC = THIRD_DAY_UTC.setHours(12, 0, 0, 0) / 1000 + 10800;
+  THIRD_DAY_UTC = THIRD_DAY_UTC.setHours(12, 0, 0, 0) / 1000 + currentCityTimeZone;
 
   showNameNextThreeDays(LANG, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC);
+  showIconsNextThreeDays(weatherData);
 }
 
 function showNameNextThreeDays(LANG, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC) {
