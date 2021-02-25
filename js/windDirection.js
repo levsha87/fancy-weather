@@ -1,39 +1,135 @@
 const windDirection = {
-    'en' : {
-            'NNE' : 'NNE',      //deg > 11.25  && deg <= 33.75
-            'NE' : 'NE',        //deg > 33.75  && deg <= 56.25
-            'ENE' : 'ENE',      //deg > 56.25  && deg <= 78.75
-            'E' : 'E',          //deg > 78.75  && deg <= 101.25
-            'ESE' : 'ESE',      //deg > 101.25 && deg <= 123.75
-            'SE' : 'SE',        //deg > 123.75 && deg <= 146.25
-            'SSE' : 'SSE',      //deg > 146.25 && deg <= 168.75
-            'S' : 'S',          //deg > 168.75 && deg <= 191.25
-            'SSW' : 'SSW',      //deg > 191.25 && deg <= 213.75
-            'SW' : 'SW',        //deg > 213.75 && deg <= 236.25
-            'WSW' : 'WSW',      //deg > 236.25 && deg <= 258.75
-            'W' : 'W',          //deg > 258.75 && deg <= 281.25
-            'WNW' : 'WNW',      //deg > 281.25 && deg <= 303.75
-            'NW' : 'NW',        //deg > 303.75 && deg <= 326.25
-            'NNW' : 'NNW',      //deg > 326.25 && deg <= 348.75
-            'N' : 'N',          //deg > 348.75 && deg <= 11.25
-    },
+  en: {
+    NNE: {
+      lowBoundary: 11.25,
+      highBoundary: 33.75,
+    }, //deg > 11.25  && deg <= 33.75
+    NE: {
+      lowBoundary: 33.75,
+      highBoundary: 56.25,
+    }, //deg > 33.75  && deg <= 56.25
+    ENE: {
+      lowBoundary: 56.25,
+      highBoundary: 78.75,
+    }, //deg > 56.25  && deg <= 78.75
+    E: {
+      lowBoundary: 78.75,
+      highBoundary: 101.25,
+    }, //deg > 78.75  && deg <= 101.25
+    ESE: {
+      lowBoundary: 101.25,
+      highBoundary: 123.75,
+    }, //deg > 101.25 && deg <= 123.75
+    SE: {
+      lowBoundary: 123.75,
+      highBoundary: 146.25,
+    }, //deg > 123.75 && deg <= 146.25
+    SSE: {
+      lowBoundary: 146.25,
+      highBoundary: 168.75,
+    }, //deg > 146.25 && deg <= 168.75
+    S: {
+      lowBoundary: 168.75,
+      highBoundary: 191.25,
+    }, //deg > 168.75 && deg <= 191.25
+    SSW: {
+      lowBoundary: 191.25,
+      highBoundary: 213.75,
+    }, //deg > 191.25 && deg <= 213.75
+    SW: {
+      lowBoundary: 213.75,
+      highBoundary: 236.25,
+    }, //deg > 213.75 && deg <= 236.25
+    WSW: {
+      lowBoundary: 236.25,
+      highBoundary: 258.75,
+    }, //deg > 236.25 && deg <= 258.75
+    W: {
+      lowBoundary: 258.75,
+      highBoundary: 281.25,
+    }, //deg > 258.75 && deg <= 281.25
+    WNW: {
+      lowBoundary: 281.25,
+      highBoundary: 303.75,
+    }, //deg > 281.25 && deg <= 303.75
+    NW: {
+      lowBoundary: 303.75,
+      highBoundary: 326.25,
+    }, //deg > 303.75 && deg <= 326.25
+    NNW: {
+      lowBoundary: 326.25,
+      highBoundary: 348.75,
+    }, //deg > 326.25 && deg <= 348.75
+    N: {
+      lowBoundary: 348.75,
+      highBoundary: 11.25,
+    }, //deg > 348.75 && deg <= 11.25
+  },
 
-    'ru' : {
-            'NNE' : 'ССВ',
-            'NE' : 'СВ',
-            'ENE' : 'ВСВ',
-            'E' : 'В',
-            'ESE' : 'ВЮВ',
-            'SE' : 'ЮВ',
-            'SSE' : 'ЮЮВ',
-            'S' : 'Ю',
-            'SSW' : 'ЮЮЗ',
-            'SW' : 'ЮЗ',
-            'WSW' : 'ЗЮЗ',
-            'W' : 'З',
-            'WNW' : 'ЗСЗ',
-            'NW' : 'СЗ',
-            'NNW' : 'ССЗ',
-            'N' : 'С',
-            }
+  ru: {
+    ССВ: {
+      lowBoundary: 11.25,
+      highBoundary: 33.75,
+    }, //deg > 11.25  && deg <= 33.75
+    СВ: {
+      lowBoundary: 33.75,
+      highBoundary: 56.25,
+    }, //deg > 33.75  && deg <= 56.25
+    ВСВ: {
+      lowBoundary: 56.25,
+      highBoundary: 78.75,
+    }, //deg > 56.25  && deg <= 78.75
+    В: {
+      lowBoundary: 78.75,
+      highBoundary: 101.25,
+    }, //deg > 78.75  && deg <= 101.25
+    ВЮВ: {
+      lowBoundary: 101.25,
+      highBoundary: 123.75,
+    }, //deg > 101.25 && deg <= 123.75
+    ЮВ: {
+      lowBoundary: 123.75,
+      highBoundary: 146.25,
+    }, //deg > 123.75 && deg <= 146.25
+    ЮЮВ: {
+      lowBoundary: 146.25,
+      highBoundary: 168.75,
+    }, //deg > 146.25 && deg <= 168.75
+    Ю: {
+      lowBoundary: 168.75,
+      highBoundary: 191.25,
+    }, //deg > 168.75 && deg <= 191.25
+    ЮЮЗ: {
+      lowBoundary: 191.25,
+      highBoundary: 213.75,
+    }, //deg > 191.25 && deg <= 213.75
+    ЮЗ: {
+      lowBoundary: 213.75,
+      highBoundary: 236.25,
+    }, //deg > 213.75 && deg <= 236.25
+    ЗЮЗ: {
+      lowBoundary: 236.25,
+      highBoundary: 258.75,
+    }, //deg > 236.25 && deg <= 258.75
+    З: {
+      lowBoundary: 258.75,
+      highBoundary: 281.25,
+    }, //deg > 258.75 && deg <= 281.25
+    ЗСЗ: {
+      lowBoundary: 281.25,
+      highBoundary: 303.75,
+    }, //deg > 281.25 && deg <= 303.75
+    СЗ: {
+      lowBoundary: 303.75,
+      highBoundary: 326.25,
+    }, //deg > 303.75 && deg <= 326.25
+    ССЗ: {
+      lowBoundary: 326.25,
+      highBoundary: 348.75,
+    }, //deg > 326.25 && deg <= 348.75
+    С: {
+      lowBoundary: 348.75,
+      highBoundary: 11.25,
+    }, //deg > 348.75 && deg <= 11.25
+  },
 };

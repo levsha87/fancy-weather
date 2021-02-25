@@ -280,39 +280,11 @@ function showCurrentWeatherDescribe(weatherData) {
 }
 
 function translateValueWindDirectionDegToCard(deg, LANG) {
-      if (deg > 11.25 && deg <= 33.75) {
-        return  windDirection[LANG]['NNE'];
-      } else if (deg > 33.75 && deg <= 56.25) {
-        return  windDirection[LANG]['NE'];
-      } else if (deg > 56.25 && deg <= 78.75) {
-        return  windDirection[LANG]['ENE'];
-      } else if (deg > 78.75 && deg <= 101.25) {
-        return  windDirection[LANG]['E'];
-      } else if (deg > 101.25 && deg <= 123.75) {
-        return  windDirection[LANG]['ESE'];
-      } else if (deg > 123.75 && deg <= 146.25) {
-        return  windDirection[LANG]['SE'];
-      } else if (deg > 146.25 && deg <= 168.75) {
-        return  windDirection[LANG]['SSE'];
-      } else if (deg > 168.75 && deg <= 191.25) {
-        return  windDirection[LANG]['S'];
-      } else if (deg > 191.25 && deg <= 213.75) {
-        return  windDirection[LANG]['SSW'];
-      } else if (deg > 213.75 && deg <= 236.25) {
-        return  windDirection[LANG]['SW'];
-      } else if (deg > 236.25 && deg <= 258.75) {
-        return  windDirection[LANG]['WSW'];
-      } else if (deg > 258.75 && deg <= 281.25) {
-        return  windDirection[LANG]['W'];
-      } else if (deg > 281.25 && deg <= 303.75) {
-        return  windDirection[LANG]['WNW'];
-      } else if (deg > 303.75 && deg <= 326.25) {
-        return  windDirection[LANG]['NW'];
-      } else if (deg > 326.25 && deg <= 348.75) {
-        return  windDirection[LANG]['NNW'];
-      } else {
-        return  windDirection[LANG]['N'];
-      }
+  for (let key in windDirection[LANG]){
+    if(windDirection[LANG][key].lowBoundary > deg && windDirection[LANG][key].highBoundary <= deg){
+      return key;
+    }
+  }
 }
 
 function setThreeNextDays(LANG, weatherData) {
@@ -330,7 +302,7 @@ function setThreeNextDays(LANG, weatherData) {
   THIRD_DAY_UTC = THIRD_DAY_UTC.setHours(12, 0, 0, 0) / 1000 + currentCityTimeZone;
 
   showNameNextThreeDays(LANG, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC);
-  showIconsNextThreeDays(weatherData);
+  showIconsNextThreeDays(weatherData, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC);
 }
 
 function showNameNextThreeDays(LANG, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC) {
@@ -373,10 +345,13 @@ function showNameNextThreeDays(LANG, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UT
   }
 }
 
-function showIconsNextThreeDays(weatherData) {
-  let indexFirstDayUTC = weatherData.list.findIndex( (item) => item.dt === FIRST_DAY_UTC );
+function showIconsNextThreeDays(weatherData, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC) {
+  console.log(weatherData);
+  let indexFirstDayUTC = weatherData.list.findIndex( (item) => item.dt === FIRST_DAY_UTC);
   let indexSecondDayUTC = weatherData.list.findIndex( (item) => item.dt === SECOND_DAY_UTC );
   let indexThirdDayUTC = weatherData.list.findIndex( (item) => item.dt === THIRD_DAY_UTC );
+  console.log(indexFirstDayUTC, indexSecondDayUTC, indexThirdDayUTC );
+
 
   const firstDayIcon = document.querySelector('.weather-next-days__first_icons-img');
   const secondDayIcon = document.querySelector('.weather-next-days__second_icons-img');
