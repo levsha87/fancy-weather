@@ -169,7 +169,6 @@ function showCurrentCountryNameCityName(currentCountry, currentTown) {
 }
 
 function getCoordinateCurrentCityNavigator() {
-
   navigator.geolocation.getCurrentPosition(success, error, {
     maximumAge: 60000,
     timeout: 5000,
@@ -188,7 +187,22 @@ function getCoordinateCurrentCityNavigator() {
 
   function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
-  }
+    getCoordinateIpAdress ();
+  } 
+}
+
+async function getCoordinateIpAdress () {
+  const response = await fetch('https://ipinfo.io/json?token=543fd5d393e868');
+    const place = await response.json();
+    
+    [latitude, longitude] = place.loc.split(',');
+    
+    LATITUDE_CURRENT_CITY = +latitude;
+    LONGITUDE_CURRENT_CITY = +longitude;
+
+    initMap(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+    setDAtaLocalStorage(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY, LANG, UNIT_DEGREE);
+    setSelectedLanguage (LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
 }
 
 async function getPlaceNameWeatherDataPlace(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY){
@@ -440,7 +454,7 @@ function changeBackgroundHandly() {
   refreshButton.addEventListener('click', function (){
     getBackkgroundImage();
     refreshSign.style.animationPlayState = 'running';
-    
+
     setTimeout(() => {
       refreshSign.style.animationPlayState = 'paused';
     }, 1000);
