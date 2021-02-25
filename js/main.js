@@ -428,23 +428,23 @@ function showTemperatureNumberNextThreeDays( weatherData, indexFirstDayUTC, inde
 async function getBackkgroundImage() {
   const response = await fetch('https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=76d735b7381e9ed633854a67b69d8387&tags=nature,weather,dark&tag_mode=all&extras=url_h&format=json&nojsoncallback=1');
   const images = await response.json();
+  console.log(images);
   const item = images.photos.photo[Math.floor(Math.random() * images.photos.photo.length)].url_h;
   document.documentElement.style.background = `url(${item})`;
 }
 
 function changeBackgroundHandly() {
   const refreshButton = document.querySelector('.refresh-button');
-  refreshButton.addEventListener('click', addClassBackkgroundImageClickRefreshButton);
-  refreshButton.addEventListener('animationend', deleteBackkgroundImageAnimationEndRefreshButton);
+  const refreshSign = document.querySelector('.fa-refresh');
 
-  function addClassBackkgroundImageClickRefreshButton() {
-    refreshButton.classList.add('active');
+  refreshButton.addEventListener('click', function (){
     getBackkgroundImage();
-  }
-
-  function deleteBackkgroundImageAnimationEndRefreshButton() {
-    refreshButton.classList.remove('active');
-  }
+    refreshSign.style.animationPlayState = 'running';
+    
+    setTimeout(() => {
+      refreshSign.style.animationPlayState = 'paused';
+    }, 1000);
+  });
 }
 
 function translateSearchForm() {

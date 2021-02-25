@@ -80,7 +80,7 @@ body {
 }
 
 .fa-refresh {
-  animation: rotate-around 1s forwards;
+  animation: rotate-around 1s infinite;
   animation-play-state: paused;
 }
 
