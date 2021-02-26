@@ -246,7 +246,7 @@ async function getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CIT
 
 function showCurrentWeatherPlace(weatherData){
   showCurrentTemperature(weatherData);
-  showCurrentWeatherDescribe(weatherData);
+  showCurrentWeatherDescribe(LANG, weatherData);
   showCurrentIcon(weatherData);
 }
 
@@ -261,22 +261,16 @@ function showCurrentIcon(weatherData) {
   currentIcon.src = `./images/animated/${iconDescriptor}.svg`;
 }
 
-function showCurrentWeatherDescribe(weatherData) {
-  const summury = document.querySelector('.weather-today_summury');
-  const feel = document.querySelector('.weather-today_feel');
-  const wind = document.querySelector('.weather-today_wind');
-  const humidity = document.querySelector('.weather-today_humidity');
+function showCurrentWeatherDescribe(LANG, weatherData) {
+  const summuryElement = document.querySelector('.weather-today_summury');
+  const feelElement = document.querySelector('.weather-today_feel');
+  const windElement = document.querySelector('.weather-today_wind');
+  const humidityElement = document.querySelector('.weather-today_humidity');
 
-  summury.innerHTML = weatherData.list[0].weather[0].description.toUpperCase();
-
-  if (LANG === 'ru') {
-    feel.innerHTML = `ОЩУЩАЕТСЯ КАК: ${Math.trunc(weatherData.list[0].main.feels_like)}°`;
-    wind.innerHTML = `ВЕТЕР: ${Math.trunc(weatherData.list[0].wind.speed)} m/s ${translateValueWindDirectionDegToCard(weatherData.list[0].wind.deg, LANG)}`;
-    humidity.innerHTML = `ВЛАЖНОСТЬ: ${weatherData.list[0].main.humidity}%`;
-  } else {
-    feel.innerHTML = `FEELS LIKE: ${Math.trunc(weatherData.list[0].main.feels_like)}°`;
-    wind.innerHTML = `WIND: ${Math.trunc(weatherData.list[0].wind.speed)} m/s ${translateValueWindDirectionDegToCard(weatherData.list[0].wind.deg, LANG)}`;
-    humidity.innerHTML = `HUMIDITY: ${weatherData.list[0].main.humidity}%`;}
+  summuryElement.innerHTML = weatherData.list[0].weather[0].description.toUpperCase();
+  feelElement.innerHTML = `${weatherDescription[LANG].feel.toUpperCase()} ${Math.trunc(weatherData.list[0].main.feels_like)}°`;
+  windElement.innerHTML = `${weatherDescription[LANG].wind.toUpperCase()} ${Math.trunc(weatherData.list[0].wind.speed)} ${weatherDescription[LANG].windUnit} ${translateValueWindDirectionDegToCard(weatherData.list[0].wind.deg, LANG)}`;
+  humidityElement.innerHTML = `${weatherDescription[LANG].humidity.toUpperCase()} ${weatherData.list[0].main.humidity}%`;
 }
 
 function translateValueWindDirectionDegToCard(deg, LANG) {
@@ -320,7 +314,7 @@ function showTemperatureNumberNextThreeDays(weatherData, nextDayShortString) {
 
     for (let i = 0; i < nextDayShortString.length; i++) {
       threeNextDayWeatherDataArray[i] = [];
-      
+
       for (let j = 0; j < weatherData.list.length; j++){
           if(weatherData.list[j].dt_txt.slice(0,10) === nextDayShortString[i]){
               threeNextDayWeatherDataArray[i].push(weatherData.list[j]);
