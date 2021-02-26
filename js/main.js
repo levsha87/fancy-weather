@@ -291,59 +291,64 @@ function setThreeNextDays(LANG, weatherData) {
   const nextDay = [];
   const nextDayShortString = [];
   const today = new Date();
+
   for (let i = 0; i < 3; i++) {
     nextDay[i] = new Date(2021, 1, (today.getDate() + i + 1));
+
     const year = nextDay[i].getFullYear();
     const month = `${nextDay[i].getMonth()+1}`.length <2 ? `0${nextDay[i].getMonth()+1}` : `${nextDay[i].getMonth()+1}`;
     const day =  `${nextDay[i].getDate()}`.length <2 ? `0${nextDay[i].getDate()}`: nextDay[i].getDate();
+
     nextDayShortString[i] = `${year}-${month}-${day}`;
   }
-  console.log(nextDayShortString);
 
   showNameNextThreeDays(LANG, nextDay);
-  showIconsNextThreeDays(weatherData, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC);
+  showTemperatureNumberNextThreeDays(weatherData, nextDayShortString);
 }
 
 function showNameNextThreeDays(LANG, nextDay) {
   const nextThreeDaysElements = document.querySelectorAll('.weather-next-days_name-day');
 
   for (let i = 0; i < nextDay.length; i++){
-    console.log(nextThreeDaysElements[i], nextDay[i].getDate());
     nextThreeDaysElements[i].innerHTML = weekDays[LANG][nextDay[i].getDay()];
   }
 }
 
-function showIconsNextThreeDays(weatherData, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC) {
-  console.log(weatherData);
-  let indexFirstDayUTC = weatherData.list.findIndex( (item) => item.dt === FIRST_DAY_UTC);
-  let indexSecondDayUTC = weatherData.list.findIndex( (item) => item.dt === SECOND_DAY_UTC );
-  let indexThirdDayUTC = weatherData.list.findIndex( (item) => item.dt === THIRD_DAY_UTC );
-  console.log(indexFirstDayUTC, indexSecondDayUTC, indexThirdDayUTC );
+function showTemperatureNumberNextThreeDays(weatherData, nextDayShortString) {
+  const threeNextDayTemperatureElement = document.querySelectorAll('.weather-next-days_temperature_number');
+  const threeNextDayWeatherDataArray = [];
 
+    for (let i = 0; i < nextDayShortString.length; i++) {
+      threeNextDayWeatherDataArray[i] = [];
+      
+      for (let j = 0; j < weatherData.list.length; j++){
+          if(weatherData.list[j].dt_txt.slice(0,10) === nextDayShortString[i]){
+              threeNextDayWeatherDataArray[i].push(weatherData.list[j]);
+          }
+      }
 
-  const firstDayIcon = document.querySelector('.weather-next-days__first_icons-img');
-  const secondDayIcon = document.querySelector('.weather-next-days__second_icons-img');
-  const thirdDayIcon = document.querySelector('.weather-next-days__third_icons-img');
+      let indexMaxDayTmeperature = 0;
+      let minDayTemperature = threeNextDayWeatherDataArray[i][indexMaxDayTmeperature].main.temp;
+      let maxDayTemperature = minDayTemperature;
+    
+      for (let k = 0; k < threeNextDayWeatherDataArray[i].length; k++){
+        if (threeNextDayWeatherDataArray[i][k].main.temp > maxDayTemperature) {
+          maxDayTemperature = threeNextDayWeatherDataArray[i][k].main.temp;
+          indexMaxDayTmeperature = k;
+        }
+        if (threeNextDayWeatherDataArray[i][k].main.temp < minDayTemperature) {
+          minDayTemperature = threeNextDayWeatherDataArray[i][k].main.temp;
+        }
+    } 
+    threeNextDayTemperatureElement[i].innerHTML = Math.round(threeNextDayWeatherDataArray[i][indexMaxDayTmeperature].main.temp);
+    showIconsNextThreeDays(i, threeNextDayWeatherDataArray[i][indexMaxDayTmeperature]);
+  }
+} 
 
-  const iconDescriptorFirst = weatherData.list[indexFirstDayUTC].weather[0].icon;
-  const iconDescriptorSecond = weatherData.list[indexSecondDayUTC].weather[0].icon;
-  const iconDescriptorThird = weatherData.list[indexThirdDayUTC].weather[0].icon;
-
-  firstDayIcon.src = `./images/animated/${iconDescriptorFirst}.svg`;
-  secondDayIcon.src = `./images/animated/${iconDescriptorSecond}.svg`;
-  thirdDayIcon.src = `./images/animated/${iconDescriptorThird}.svg`;
-
-  showTemperatureNumberNextThreeDays(weatherData, indexFirstDayUTC, indexSecondDayUTC, indexThirdDayUTC);
-}
-
-function showTemperatureNumberNextThreeDays( weatherData, indexFirstDayUTC, indexSecondDayUTC, indexThirdDayUTC) {
-  const firstDayTempratureNumber = document.querySelector('.weather-next-days__first_temperature_value');
-  const secondDayTempratureNumber = document.querySelector('.weather-next-days__second_temperature_value');
-  const thirdDayTempratureNumber = document.querySelector('.weather-next-days__third_temperature_value');
-
-  firstDayTempratureNumber.innerHTML = Math.trunc(weatherData.list[indexFirstDayUTC].main.temp);
-  secondDayTempratureNumber.innerHTML = Math.trunc(weatherData.list[indexSecondDayUTC].main.temp);
-  thirdDayTempratureNumber.innerHTML = Math.trunc(weatherData.list[indexThirdDayUTC].main.temp);
+function showIconsNextThreeDays(i, threeNextDayWeatherDataArray) {
+  const dayIcons = document.querySelectorAll('.weather-next-days_icons_img');
+  
+  dayIcons[i].src = `./images/animated/${threeNextDayWeatherDataArray.weather[0].icon}.svg`;
 }
 
 async function getBackkgroundImage() {
