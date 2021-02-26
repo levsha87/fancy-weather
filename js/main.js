@@ -288,60 +288,28 @@ function translateValueWindDirectionDegToCard(deg, LANG) {
 }
 
 function setThreeNextDays(LANG, weatherData) {
-  const currentCityTimeZone = weatherData.city.timezone;
+  const nextDay = [];
+  const nextDayShortString = [];
   const today = new Date();
-  const todayDate = today.getDate();
+  for (let i = 0; i < 3; i++) {
+    nextDay[i] = new Date(2021, 1, (today.getDate() + i + 1));
+    const year = nextDay[i].getFullYear();
+    const month = `${nextDay[i].getMonth()+1}`.length <2 ? `0${nextDay[i].getMonth()+1}` : `${nextDay[i].getMonth()+1}`;
+    const day =  `${nextDay[i].getDate()}`.length <2 ? `0${nextDay[i].getDate()}`: nextDay[i].getDate();
+    nextDayShortString[i] = `${year}-${month}-${day}`;
+  }
+  console.log(nextDayShortString);
 
-  FIRST_DAY_UTC = new Date(today.setDate(`${todayDate + 1}`));
-  FIRST_DAY_UTC = FIRST_DAY_UTC.setHours(12, 0, 0, 0) / 1000 + currentCityTimeZone;
-
-  SECOND_DAY_UTC = new Date(today.setDate(`${todayDate + 2}`));
-  SECOND_DAY_UTC = SECOND_DAY_UTC.setHours(12, 0, 0, 0) / 1000 + currentCityTimeZone;
-
-  THIRD_DAY_UTC = new Date(today.setDate(`${todayDate + 3}`));
-  THIRD_DAY_UTC = THIRD_DAY_UTC.setHours(12, 0, 0, 0) / 1000 + currentCityTimeZone;
-
-  showNameNextThreeDays(LANG, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC);
+  showNameNextThreeDays(LANG, nextDay);
   showIconsNextThreeDays(weatherData, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC);
 }
 
-function showNameNextThreeDays(LANG, FIRST_DAY_UTC, SECOND_DAY_UTC, THIRD_DAY_UTC) {
-  const firstNameDay = document.querySelector('.weather-next-days__first_name-day');
-  const secondNameDay = document.querySelector('.weather-next-days__second_name-day');
-  const thirdNameDay = document.querySelector('.weather-next-days__third_name-day');
-  
-  const daysRu = [
-    'Воскресенье',
-    'Понедельник',
-    'Вторник',
-    'Среда',
-    'Четверг',
-    'Пятница',
-    'Суббота',
-  ];
+function showNameNextThreeDays(LANG, nextDay) {
+  const nextThreeDaysElements = document.querySelectorAll('.weather-next-days_name-day');
 
-  const daysEn = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
-  
-  let first = new Date(FIRST_DAY_UTC * 1000).getDay();
-  let second = new Date(SECOND_DAY_UTC * 1000).getDay();
-  let third = new Date(THIRD_DAY_UTC * 1000).getDay();
-
-  if (LANG === 'ru') {
-    firstNameDay.innerHTML = daysRu[first];
-    secondNameDay.innerHTML = daysRu[second];
-    thirdNameDay.innerHTML = daysRu[third];
-  } else {
-    firstNameDay.innerHTML = daysEn[first];
-    secondNameDay.innerHTML = daysEn[second];
-    thirdNameDay.innerHTML = daysEn[third];
+  for (let i = 0; i < nextDay.length; i++){
+    console.log(nextThreeDaysElements[i], nextDay[i].getDate());
+    nextThreeDaysElements[i].innerHTML = weekDays[LANG][nextDay[i].getDay()];
   }
 }
 
