@@ -223,16 +223,11 @@ async function getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY,LONGITUDE_CURRENT_
 }
 
 function showCoordinateCurrentPlace(place) {
-  const latitude = document.querySelector('.latitude');
-  const longitude = document.querySelector('.longitude');
+  const latitudeElement = document.querySelector('.latitude');
+  const longitudeElement = document.querySelector('.longitude');
 
-  if (LANG === 'ru'){
-    latitude.innerHTML = `Широта:  ${place.results[0].annotations.DMS.lat}`;
-    longitude.innerHTML = `Долгота: ${place.results[0].annotations.DMS.lng}`;
-    } else {
-    latitude.innerHTML = `Latitude:  ${place.results[0].annotations.DMS.lat}`;
-    longitude.innerHTML = `Longitude: ${place.results[0].annotations.DMS.lng}`;
-  } 
+  latitudeElement.innerHTML = `${coordinateName[LANG].latitude}  ${place.results[0].annotations.DMS.lat}`;
+  longitudeElement.innerHTML = `${coordinateName[LANG].longitude} ${place.results[0].annotations.DMS.lng}`;
 }
 
 async function getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
