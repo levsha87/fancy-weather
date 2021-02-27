@@ -57,8 +57,6 @@ SEARCH_BUTTON.addEventListener('click', getDataSearchForm);
 SEARCH_FIELD.addEventListener('keydown', (e) => getDataSearchFormPressEnter(e)); 
 
 
-
-
 function changeTemperatureUnit(event) {
   const item = event.target.id;
   getDataLocalStorage();
@@ -123,30 +121,27 @@ function initMap(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
 
 function getCurrentFullTime(LANG) {
   let today = new Date();
-  let arr = today.toString().split(' ');
-  arr.length = 5;
   
-  let month = arr[1];
-  let dateToday = arr[2];
-  let dayToday = arr[0];
-  let timeNow = arr[4];
-
-    if (LANG === 'ru') {
-      arr = today.toLocaleString('ru', {
-        day: 'numeric',
-        weekday: 'short',
-        month: 'short',
-      }).replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
-    month = arr[2];
-    dateToday = arr[1];
-    dayToday = arr[0];
-    }
-
-  showCurrentTime(month, dateToday, dayToday, timeNow);
+  switch (LANG) {
+    case 'en': [dayToday, month, dateToday, , timeNow] = today.toString().split(' ');
+      break; 
+  
+    case LANG:[dayToday, dateToday, month, timeNow]= today.toLocaleString(`${LANG}`, {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    }).replace(/[.,\/#!$%\^&\*;{}=\-_`~()]/g,"").split(' ');
+      break;
+  }
+  
+  showCurrentTime(dayToday, month, dateToday, timeNow);
 }
 
 
-function showCurrentTime(month, dateToday, dayToday, timeNow) {
+function showCurrentTime(dayToday, month, dateToday, timeNow) {
   const monthElement = document.querySelector('.month');
   const dateTodayElement = document.querySelector('.date-today');
   const dayTodayElement = document.querySelector('.day-today');
@@ -176,7 +171,7 @@ function getCoordinateCurrentCityNavigator() {
   });
 
   function success(pos) {
-    let crd = pos.coords;
+    const crd = pos.coords;
     LATITUDE_CURRENT_CITY = +crd.latitude;
     LONGITUDE_CURRENT_CITY = +crd.longitude;
 
