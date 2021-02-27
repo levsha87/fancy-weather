@@ -269,6 +269,7 @@ body {
   font-family: Montserrat-Bold;
   display: flex;
   position: relative;
+  justify-content: center;
 }
 
 .weather-today__temperature_number img {
@@ -322,7 +323,7 @@ body {
   font-family: Montserrat-SemiBold;
   font-size: 60px;
   display: flex;
-  padding-left: 3px;
+  margin: 0 5%;
 }
 
 .weather-next-days_sign-degree {
@@ -336,9 +337,14 @@ body {
 
 .weather-next-days_icons {
   position: absolute;
-  top: 10%;
+  top: 5%;
   left: 30%;
   z-index: -1;
+}
+
+.weather-next-days_icons img {
+  width: 80px;
+  height: 80px;
 }
 
 .user-location {

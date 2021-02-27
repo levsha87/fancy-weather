@@ -358,7 +358,6 @@ function changeBackgroundHandly() {
 }
 
 function translateSearchForm() {
-
   switch (LANG) {
     case 'ru':
       SEARCH_FIELD.setAttribute('placeholder','Город Район Область');
