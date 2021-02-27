@@ -136,7 +136,7 @@ function getCurrentFullTime(LANG) {
     }).replace(/[.,\/#!$%\^&\*;{}=\-_`~()]/g,"").split(' ');
       break;
   }
-  
+
   showCurrentTime(dayToday, month, dateToday, timeNow);
 }
 
@@ -358,12 +358,17 @@ function changeBackgroundHandly() {
 }
 
 function translateSearchForm() {
-  if (LANG === 'ru') {
-    SEARCH_FIELD.setAttribute('placeholder','Город Район Область');
-    SEARCH_BUTTON.innerHTML = 'поиск';
-  } else {
-    SEARCH_FIELD.setAttribute('placeholder','Town Region');
-    SEARCH_BUTTON.innerHTML = 'SEARCH';
+
+  switch (LANG) {
+    case 'ru':
+      SEARCH_FIELD.setAttribute('placeholder','Город Район Область');
+      SEARCH_BUTTON.innerHTML = 'поиск';
+      break;
+  
+    case 'en':
+      SEARCH_FIELD.setAttribute('placeholder','Town Region');
+      SEARCH_BUTTON.innerHTML = 'SEARCH';
+      break;
   }
 }
 
@@ -378,4 +383,3 @@ function translateSearchForm() {
   initMap(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
   getPlaceNameWeatherDataPlace(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
 }
-
