@@ -27,7 +27,7 @@ const searchElementTranslate = {
   }
 };
 
-function weatherAppInit () {
+function initWeatherApp () {
   getBackkgroundImage();
   changeBackgroundHandly();
   getCoordinateCurrentCityNavigator();
@@ -372,7 +372,7 @@ async function getBackkgroundImage() {
 
 function changeBackgroundHandly() {
   const refreshButton = document.querySelector('.refresh-button');
-  const refreshSign = document.querySelector('.fa-refresh');
+  const refreshSign = document.querySelector('#refresh-sign');
 
   refreshButton.addEventListener('click', function (){
     getBackkgroundImage();
@@ -396,4 +396,4 @@ function changeBackgroundHandly() {
   getPlaceNameWeatherDataPlace(lang, latitudeCurrentCity, longitudeCurrentCity);
 }
 
-weatherAppInit ();
+initWeatherApp ();
