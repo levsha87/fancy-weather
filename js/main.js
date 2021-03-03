@@ -4,15 +4,30 @@ const TEMPERATURE_BUTTONS = document.querySelector('.temperature-buttons');
 const SEARCH_FIELD = document.querySelector('.search-field');
 const SEARCH_BUTTON = document.querySelector('.search-button');
 const MAP_CONTAINER = document.querySelector('.user-location__geolocation');
-
 const QUANTITY_NEXT_DAYS = 3;
+const UNIT_CELSIUS = 'metric';
+const UNIT_FAHRENHEIT = 'imperial';
+const enLanguage = 'en';
+const ruLanguage = 'ru';
 
 
-let lang = localStorage.getItem('lang') || 'en';
-let unitDegree = localStorage.getItem('unitDegree') || 'metric';
-let CITY_NAME;
+let lang = localStorage.getItem('lang') || enLanguage;
+let unitDegree = localStorage.getItem('unitDegree') || UNIT_CELSIUS;
+let cityName;
 let latitudeCurrentCity;
 let longitudeCurrentCity;
+
+function weatherAppInit () {
+  getBackkgroundImage();
+  changeBackgroundHandly();
+  getCoordinateCurrentCityNavigator();
+  setDefaultAttributeValueLanguageUnit(lang, unitDegree);
+
+  TEMPERATURE_BUTTONS.addEventListener('change', (event) => changeTemperatureUnit(event) );
+  LANGUAGE.addEventListener('change', changeLanguage);
+  SEARCH_BUTTON.addEventListener('click', getDataSearchForm);
+  SEARCH_FIELD.addEventListener('keydown', (e) => getDataSearchFormPressEnter(e)); 
+}
 
 function setDefaultAttributeValueLanguageUnit(lang, unitDegree) {
   const options = document.querySelectorAll('option');
@@ -23,7 +38,7 @@ function setDefaultAttributeValueLanguageUnit(lang, unitDegree) {
     options[1].setAttribute('selected', true);
   } 
 
-  if(unitDegree === 'metric') {
+  if(unitDegree === UNIT_CELSIUS) {
     UNIT_BUTTONS[0].checked = true;
   } else {
     UNIT_BUTTONS[1].checked = true;
@@ -44,28 +59,16 @@ function setDAtaLocalStorage(latitudeCurrentCity, longitudeCurrentCity, lang, un
   localStorage.setItem('unitDegree', unitDegree);
 }
 
-getBackkgroundImage();
-changeBackgroundHandly();
-getCoordinateCurrentCityNavigator();
-setDefaultAttributeValueLanguageUnit(lang, unitDegree);
-
-
-TEMPERATURE_BUTTONS.addEventListener("change", (event) => changeTemperatureUnit(event) );
-LANGUAGE.addEventListener("change", changeLanguage);
-SEARCH_BUTTON.addEventListener('click', getDataSearchForm);
-SEARCH_FIELD.addEventListener('keydown', (e) => getDataSearchFormPressEnter(e)); 
-
-
 function changeTemperatureUnit(event) {
   const item = event.target.id;
   getDataLocalStorage();
 
 if(item === 'temperature-celsius'){
-    unitDegree = 'metric';
+    unitDegree = UNIT_CELSIUS;
     localStorage.setItem('unitDegree', unitDegree);
     getPlaceNameWeatherDataPlace(lang, latitudeCurrentCity, longitudeCurrentCity);
   } else {
-    unitDegree = 'imperial';
+    unitDegree = UNIT_FAHRENHEIT;
     localStorage.setItem('unitDegree', unitDegree);
     getPlaceNameWeatherDataPlace(lang, latitudeCurrentCity, longitudeCurrentCity);
   }
@@ -87,6 +90,20 @@ function setSelectedLanguage (latitudeCurrentCity, longitudeCurrentCity) {
   translateSearchForm();
 }
 
+function translateSearchForm() {
+  switch (lang) {
+    case ruLanguage:
+      SEARCH_FIELD.setAttribute('placeholder','Город Район Область');
+      SEARCH_BUTTON.innerHTML = 'поиск';
+      break;
+  
+    case enLanguage:
+      SEARCH_FIELD.setAttribute('placeholder','Town Region');
+      SEARCH_BUTTON.innerHTML = 'SEARCH';
+      break;
+  }
+}
+
 function getDataSearchFormPressEnter(e){
   if (e.keyCode === 13) {
     e.preventDefault();
@@ -95,9 +112,9 @@ function getDataSearchFormPressEnter(e){
 }
 
 function getDataSearchForm(){
-  CITY_NAME = SEARCH_FIELD.value;
+  cityName = SEARCH_FIELD.value;
   SEARCH_FIELD.value ='';
-  getCoordinateByPlaceName(CITY_NAME);
+  getCoordinateByPlaceName(cityName);
 }
 
 // Initialize and add the map
@@ -122,7 +139,7 @@ function getCurrentFullTime(lang) {
   let today = new Date();
   
   switch (lang) {
-    case 'en': [dayToday, month, dateToday, , timeNow] = today.toString().split(' ');
+    case enLanguage: [dayToday, month, dateToday, , timeNow] = today.toString().split(' ');
       break; 
   
     case lang:[dayToday, dateToday, month, timeNow]= today.toLocaleString(`${lang}`, {
@@ -366,22 +383,8 @@ function changeBackgroundHandly() {
   });
 }
 
-function translateSearchForm() {
-  switch (lang) {
-    case 'ru':
-      SEARCH_FIELD.setAttribute('placeholder','Город Район Область');
-      SEARCH_BUTTON.innerHTML = 'поиск';
-      break;
-  
-    case 'en':
-      SEARCH_FIELD.setAttribute('placeholder','Town Region');
-      SEARCH_BUTTON.innerHTML = 'SEARCH';
-      break;
-  }
-}
-
- async function getCoordinateByPlaceName(CITY_NAME) {
-  const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${CITY_NAME}&key=0f2efca19d1747cd906baa8bb7f8c2f7`);
+ async function getCoordinateByPlaceName(cityName) {
+  const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${cityName}&key=0f2efca19d1747cd906baa8bb7f8c2f7`);
   const coord = await response.json();
   
   latitudeCurrentCity = coord.results[0].geometry.lat;
@@ -391,3 +394,5 @@ function translateSearchForm() {
   initMap(latitudeCurrentCity, longitudeCurrentCity);
   getPlaceNameWeatherDataPlace(lang, latitudeCurrentCity, longitudeCurrentCity);
 }
+
+weatherAppInit ();
