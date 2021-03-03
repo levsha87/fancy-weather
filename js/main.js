@@ -7,15 +7,25 @@ const MAP_CONTAINER = document.querySelector('.user-location__geolocation');
 const QUANTITY_NEXT_DAYS = 3;
 const UNIT_CELSIUS = 'metric';
 const UNIT_FAHRENHEIT = 'imperial';
-const enLanguage = 'en';
-const ruLanguage = 'ru';
+const EN_LANGUAGE = 'en';
+const RU_LANGUAGE = 'ru';
 
-
-let lang = localStorage.getItem('lang') || enLanguage;
+let lang = localStorage.getItem('lang') || EN_LANGUAGE;
 let unitDegree = localStorage.getItem('unitDegree') || UNIT_CELSIUS;
 let cityName;
 let latitudeCurrentCity;
 let longitudeCurrentCity;
+
+const searchElementTranslate = {
+  ru: {
+    placeholder: 'Город Район Область',
+    search: 'поиск'
+  },
+  en: {
+    placeholder: 'Town Region',
+      search: 'search'
+  }
+};
 
 function weatherAppInit () {
   getBackkgroundImage();
@@ -91,17 +101,8 @@ function setSelectedLanguage (latitudeCurrentCity, longitudeCurrentCity) {
 }
 
 function translateSearchForm() {
-  switch (lang) {
-    case ruLanguage:
-      SEARCH_FIELD.setAttribute('placeholder','Город Район Область');
-      SEARCH_BUTTON.innerHTML = 'поиск';
-      break;
-  
-    case enLanguage:
-      SEARCH_FIELD.setAttribute('placeholder','Town Region');
-      SEARCH_BUTTON.innerHTML = 'SEARCH';
-      break;
-  }
+  SEARCH_FIELD.setAttribute('placeholder',`${searchElementTranslate[lang].placeholder}`);
+  SEARCH_BUTTON.innerHTML = `${searchElementTranslate[lang].search}`.toUpperCase();
 }
 
 function getDataSearchFormPressEnter(e){
@@ -139,7 +140,7 @@ function getCurrentFullTime(lang) {
   let today = new Date();
   
   switch (lang) {
-    case enLanguage: [dayToday, month, dateToday, , timeNow] = today.toString().split(' ');
+    case EN_LANGUAGE: [dayToday, month, dateToday, , timeNow] = today.toString().split(' ');
       break; 
   
     case lang:[dayToday, dateToday, month, timeNow]= today.toLocaleString(`${lang}`, {
@@ -149,7 +150,7 @@ function getCurrentFullTime(lang) {
       hour: 'numeric',
       minute: 'numeric',
       second: 'numeric'
-    }).replace(/[.,\/#!$%\^&\*;{}=\-_`~()]/g,"").split(' ');
+    }).replace(/[.,\/#!$%\^&\*;{}=\-_`~()]/g,'').split(' ');
       break;
   }
 
