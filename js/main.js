@@ -1,54 +1,53 @@
 const LANGUAGE = document.querySelector('.language-button-content');
-const BUTTONS_UNIT = document.querySelectorAll('.radio-input');
+const UNIT_BUTTONS = document.querySelectorAll('.radio-input');
 const TEMPERATURE_BUTTONS = document.querySelector('.temperature-buttons');
 const SEARCH_FIELD = document.querySelector('.search-field');
 const SEARCH_BUTTON = document.querySelector('.search-button');
 const MAP_CONTAINER = document.querySelector('.user-location__geolocation');
 
+const QUANTITY_NEXT_DAYS = 3;
 
-let LANG = localStorage.getItem('LANG') || 'en';
-let UNIT_DEGREE = localStorage.getItem('UNIT_DEGREE') || 'metric';
-let FIRST_DAY_UTC;
-let SECOND_DAY_UTC;
-let THIRD_DAY_UTC;
+
+let lang = localStorage.getItem('lang') || 'en';
+let unitDegree = localStorage.getItem('unitDegree') || 'metric';
 let CITY_NAME;
-let LATITUDE_CURRENT_CITY;
-let LONGITUDE_CURRENT_CITY;
+let latitudeCurrentCity;
+let longitudeCurrentCity;
 
-function setDefaultAttributeValueLanguageUnit(LANG, UNIT_DEGREE) {
+function setDefaultAttributeValueLanguageUnit(lang, unitDegree) {
   const options = document.querySelectorAll('option');
 
-  if(LANGUAGE.value === LANG) {
+  if(LANGUAGE.value === lang) {
     options[0].setAttribute('selected', true);
   } else {
     options[1].setAttribute('selected', true);
   } 
 
-  if(UNIT_DEGREE === 'metric') {
-    BUTTONS_UNIT[0].checked = true;
+  if(unitDegree === 'metric') {
+    UNIT_BUTTONS[0].checked = true;
   } else {
-    BUTTONS_UNIT[1].checked = true;
+    UNIT_BUTTONS[1].checked = true;
   } 
 }
 
 function getDataLocalStorage() {
-  LATITUDE_CURRENT_CITY = localStorage.getItem('LATITUDE_CURRENT_CITY');
-  LONGITUDE_CURRENT_CITY = localStorage.getItem('LONGITUDE_CURRENT_CITY');
-  LANG = localStorage.getItem('LANG');
-  UNIT_DEGREE = localStorage.getItem('UNIT_DEGREE');
+  latitudeCurrentCity = localStorage.getItem('latitudeCurrentCity');
+  longitudeCurrentCity = localStorage.getItem('longitudeCurrentCity');
+  lang = localStorage.getItem('lang');
+  unitDegree = localStorage.getItem('unitDegree');
 }
 
-function setDAtaLocalStorage(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY, LANG, UNIT_DEGREE) {
-  localStorage.setItem('LATITUDE_CURRENT_CITY', LATITUDE_CURRENT_CITY);
-  localStorage.setItem('LONGITUDE_CURRENT_CITY', LONGITUDE_CURRENT_CITY );
-  localStorage.setItem('LANG', LANG);
-  localStorage.setItem('UNIT_DEGREE', UNIT_DEGREE);
+function setDAtaLocalStorage(latitudeCurrentCity, longitudeCurrentCity, lang, unitDegree) {
+  localStorage.setItem('latitudeCurrentCity', latitudeCurrentCity);
+  localStorage.setItem('longitudeCurrentCity', longitudeCurrentCity );
+  localStorage.setItem('lang', lang);
+  localStorage.setItem('unitDegree', unitDegree);
 }
 
 getBackkgroundImage();
 changeBackgroundHandly();
 getCoordinateCurrentCityNavigator();
-setDefaultAttributeValueLanguageUnit(LANG, UNIT_DEGREE);
+setDefaultAttributeValueLanguageUnit(lang, unitDegree);
 
 
 TEMPERATURE_BUTTONS.addEventListener("change", (event) => changeTemperatureUnit(event) );
@@ -62,29 +61,29 @@ function changeTemperatureUnit(event) {
   getDataLocalStorage();
 
 if(item === 'temperature-celsius'){
-    UNIT_DEGREE = 'metric';
-    localStorage.setItem('UNIT_DEGREE', UNIT_DEGREE);
-    getPlaceNameWeatherDataPlace(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+    unitDegree = 'metric';
+    localStorage.setItem('unitDegree', unitDegree);
+    getPlaceNameWeatherDataPlace(lang, latitudeCurrentCity, longitudeCurrentCity);
   } else {
-    UNIT_DEGREE = 'imperial';
-    localStorage.setItem('UNIT_DEGREE', UNIT_DEGREE);
-    getPlaceNameWeatherDataPlace(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+    unitDegree = 'imperial';
+    localStorage.setItem('unitDegree', unitDegree);
+    getPlaceNameWeatherDataPlace(lang, latitudeCurrentCity, longitudeCurrentCity);
   }
 }
 
 function changeLanguage(){
-  LANG = this.value;
-  localStorage.setItem('LANG', LANG);
-  setSelectedLanguage(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+  lang = this.value;
+  localStorage.setItem('lang', lang);
+  setSelectedLanguage(latitudeCurrentCity, longitudeCurrentCity);
 }
 
-function setSelectedLanguage (LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
+function setSelectedLanguage (latitudeCurrentCity, longitudeCurrentCity) {
   getDataLocalStorage();
   setInterval(() => {
-    getCurrentFullTime(LANG);
+    getCurrentFullTime(lang);
   }, 1000);
   
-  getPlaceNameWeatherDataPlace(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+  getPlaceNameWeatherDataPlace(lang, latitudeCurrentCity, longitudeCurrentCity);
   translateSearchForm();
 }
 
@@ -102,8 +101,8 @@ function getDataSearchForm(){
 }
 
 // Initialize and add the map
-function initMap(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
-  const city = { lat: LATITUDE_CURRENT_CITY, lng: LONGITUDE_CURRENT_CITY };
+function initMap(latitudeCurrentCity, longitudeCurrentCity) {
+  const city = { lat: latitudeCurrentCity, lng: longitudeCurrentCity };
 
   const map = new mapboxgl.Map({
   container: MAP_CONTAINER,
@@ -119,14 +118,14 @@ function initMap(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
 
 /*--------------------get current month, day, time---------------*/
 
-function getCurrentFullTime(LANG) {
+function getCurrentFullTime(lang) {
   let today = new Date();
   
-  switch (LANG) {
+  switch (lang) {
     case 'en': [dayToday, month, dateToday, , timeNow] = today.toString().split(' ');
       break; 
   
-    case LANG:[dayToday, dateToday, month, timeNow]= today.toLocaleString(`${LANG}`, {
+    case lang:[dayToday, dateToday, month, timeNow]= today.toLocaleString(`${lang}`, {
       weekday: 'short',
       month: 'short',
       day: 'numeric',
@@ -172,12 +171,12 @@ function getCoordinateCurrentCityNavigator() {
 
   function success(pos) {
     const crd = pos.coords;
-    LATITUDE_CURRENT_CITY = +crd.latitude;
-    LONGITUDE_CURRENT_CITY = +crd.longitude;
+    latitudeCurrentCity = +crd.latitude;
+    longitudeCurrentCity = +crd.longitude;
 
-    initMap(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
-    setDAtaLocalStorage(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY, LANG, UNIT_DEGREE);
-    setSelectedLanguage (LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+    initMap(latitudeCurrentCity, longitudeCurrentCity);
+    setDAtaLocalStorage(latitudeCurrentCity, longitudeCurrentCity, lang, unitDegree);
+    setSelectedLanguage (latitudeCurrentCity, longitudeCurrentCity);
   }
 
   function error(err) {
@@ -192,21 +191,21 @@ async function getCoordinateIpAdress () {
     console.log(place);
     [latitude, longitude] = place.loc.split(',');
     
-    LATITUDE_CURRENT_CITY = +latitude;
-    LONGITUDE_CURRENT_CITY = +longitude;
+    latitudeCurrentCity = +latitude;
+    longitudeCurrentCity = +longitude;
 
-    initMap(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
-    setDAtaLocalStorage(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY, LANG, UNIT_DEGREE);
-    setSelectedLanguage (LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+    initMap(latitudeCurrentCity, longitudeCurrentCity);
+    setDAtaLocalStorage(latitudeCurrentCity, longitudeCurrentCity, lang, unitDegree);
+    setSelectedLanguage (latitudeCurrentCity, longitudeCurrentCity);
 }
 
-async function getPlaceNameWeatherDataPlace(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY){
-  await getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY,LONGITUDE_CURRENT_CITY );
-  await getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+async function getPlaceNameWeatherDataPlace(lang, latitudeCurrentCity, longitudeCurrentCity){
+  await getPlaceNameByCoordinate(latitudeCurrentCity,longitudeCurrentCity );
+  await getWeatherData(lang, latitudeCurrentCity, longitudeCurrentCity);
 }
 
-async function getPlaceNameByCoordinate(LATITUDE_CURRENT_CITY,LONGITUDE_CURRENT_CITY ) {
-  const url = `https://api.opencagedata.com/geocode/v1/json?q=${LATITUDE_CURRENT_CITY.toString()},${LONGITUDE_CURRENT_CITY.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7&language=${LANG}`;
+async function getPlaceNameByCoordinate(latitudeCurrentCity,longitudeCurrentCity ) {
+  const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitudeCurrentCity.toString()},${longitudeCurrentCity.toString()}&key=0f2efca19d1747cd906baa8bb7f8c2f7&language=${lang}`;
   const response = await fetch(url);
   const place = await response.json();
   
@@ -221,22 +220,22 @@ function showCoordinateCurrentPlace(place) {
   const latitudeElement = document.querySelector('.latitude');
   const longitudeElement = document.querySelector('.longitude');
 
-  latitudeElement.innerHTML = `${coordinateName[LANG].latitude}  ${place.results[0].annotations.DMS.lat}`;
-  longitudeElement.innerHTML = `${coordinateName[LANG].longitude} ${place.results[0].annotations.DMS.lng}`;
+  latitudeElement.innerHTML = `${coordinateName[lang].latitude}  ${place.results[0].annotations.DMS.lat}`;
+  longitudeElement.innerHTML = `${coordinateName[lang].longitude} ${place.results[0].annotations.DMS.lng}`;
 }
 
-async function getWeatherData(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY) {
-  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${LATITUDE_CURRENT_CITY.toString()}&lon=${LONGITUDE_CURRENT_CITY.toString()}&units=${UNIT_DEGREE}&appid=0f57bad2b641ca690297cce9e9f87665&lang=${LANG}`;
+async function getWeatherData(lang, latitudeCurrentCity, longitudeCurrentCity) {
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitudeCurrentCity.toString()}&lon=${longitudeCurrentCity.toString()}&units=${unitDegree}&appid=0f57bad2b641ca690297cce9e9f87665&lang=${lang}`;
   const responseWeatherData = await fetch(url);
   const weatherData = await responseWeatherData.json();
  
   showCurrentWeatherPlace(weatherData);
-  setThreeNextDays(LANG, weatherData);
+  setNextDays(lang, weatherData);
 }
 
 function showCurrentWeatherPlace(weatherData){
   showCurrentTemperature(weatherData);
-  showCurrentWeatherDescribe(LANG, weatherData);
+  showCurrentWeatherDescribe(lang, weatherData);
   showCurrentIcon(weatherData);
 }
 
@@ -251,54 +250,64 @@ function showCurrentIcon(weatherData) {
   currentIcon.src = `./images/animated/${iconDescriptor}.svg`;
 }
 
-function showCurrentWeatherDescribe(LANG, weatherData) {
+function showCurrentWeatherDescribe(lang, weatherData) {
   const summuryElement = document.querySelector('.weather-today_summury');
   const feelElement = document.querySelector('.weather-today_feel');
   const windElement = document.querySelector('.weather-today_wind');
   const humidityElement = document.querySelector('.weather-today_humidity');
 
   summuryElement.innerHTML = weatherData.list[0].weather[0].description.toUpperCase();
-  feelElement.innerHTML = `${weatherDescription[LANG].feel.toUpperCase()} ${Math.trunc(weatherData.list[0].main.feels_like)}°`;
-  windElement.innerHTML = `${weatherDescription[LANG].wind.toUpperCase()} ${Math.trunc(weatherData.list[0].wind.speed)} ${weatherDescription[LANG].windUnit} ${translateValueWindDirectionDegToCard(weatherData.list[0].wind.deg, LANG)}`;
-  humidityElement.innerHTML = `${weatherDescription[LANG].humidity.toUpperCase()} ${weatherData.list[0].main.humidity}%`;
+  feelElement.innerHTML = `${weatherDescription[lang].feel.toUpperCase()} ${Math.trunc(weatherData.list[0].main.feels_like)}°`;
+  windElement.innerHTML = `${weatherDescription[lang].wind.toUpperCase()} ${Math.trunc(weatherData.list[0].wind.speed)} ${weatherDescription[lang].windUnit} ${translateValueWindDirectionDegToCard(weatherData.list[0].wind.deg, lang)}`;
+  humidityElement.innerHTML = `${weatherDescription[lang].humidity.toUpperCase()} ${weatherData.list[0].main.humidity}%`;
 }
 
 function translateValueWindDirectionDegToCard(deg, LANG) {
-  for (let key in windDirection[LANG]){
-    if(windDirection[LANG][key].lowBoundary > deg && windDirection[LANG][key].highBoundary <= deg){
+  for (let key in windDirection[lang]){
+    if(windDirection[lang][key].lowBoundary > deg && windDirection[lang][key].highBoundary <= deg){
       return key;
     }
   }
 }
 
-function setThreeNextDays(LANG, weatherData) {
-  const nextDay = [];
-  const nextDayShortString = [];
+function setNextDays(lang, weatherData) {
+  const nextDays = [];
   const today = new Date();
 
-  for (let i = 0; i < 3; i++) {
-    nextDay[i] = new Date(2021, 1, (today.getDate() + i + 1));
-
-    const year = nextDay[i].getFullYear();
-    const month = `${nextDay[i].getMonth()+1}`.length <2 ? `0${nextDay[i].getMonth()+1}` : `${nextDay[i].getMonth()+1}`;
-    const day =  `${nextDay[i].getDate()}`.length <2 ? `0${nextDay[i].getDate()}`: nextDay[i].getDate();
-
-    nextDayShortString[i] = `${year}-${month}-${day}`;
+  for (let i = 0; i < QUANTITY_NEXT_DAYS; i++) {
+    nextDays[i] = new Date(today.getFullYear(), today.getMonth(), (today.getDate() + (i + 1)) );
   }
 
-  showNameNextThreeDays(LANG, nextDay);
-  showTemperatureNumberNextThreeDays(weatherData, nextDayShortString);
+  showNameNextDays(lang, nextDays);
+  getShotRenderDateNextDays(weatherData, nextDays);
 }
 
-function showNameNextThreeDays(LANG, nextDay) {
+function getShotRenderDateNextDays(weatherData, nextDays){
+  const nextDayShortString = [];
+  const digitLength = 2;
+  let year;
+  let month;
+  let day;
+
+  for (let i = 0; i < QUANTITY_NEXT_DAYS; i++) {
+  year = nextDays[i].getFullYear();
+  month = `${nextDays[i].getMonth()+1}`.padStart(digitLength, 0);
+  day =  `${nextDays[i].getDate()}`.padStart(digitLength, 0);
+
+  nextDayShortString[i] = `${year}-${month}-${day}`;
+  }
+  showTemperatureNumberNextDays(weatherData, nextDayShortString);
+}
+
+function showNameNextDays(lang, nextDay) {
   const nextThreeDaysElements = document.querySelectorAll('.weather-next-days_name-day');
 
   for (let i = 0; i < nextDay.length; i++){
-    nextThreeDaysElements[i].innerHTML = weekDays[LANG][nextDay[i].getDay()];
+    nextThreeDaysElements[i].innerHTML = weekDays[lang][nextDay[i].getDay()];
   }
 }
 
-function showTemperatureNumberNextThreeDays(weatherData, nextDayShortString) {
+function showTemperatureNumberNextDays(weatherData, nextDayShortString) {
   const threeNextDayTemperatureElement = document.querySelectorAll('.weather-next-days_temperature_number');
   const threeNextDayWeatherDataArray = [];
 
@@ -325,11 +334,11 @@ function showTemperatureNumberNextThreeDays(weatherData, nextDayShortString) {
         }
     } 
     threeNextDayTemperatureElement[i].innerHTML = Math.round(threeNextDayWeatherDataArray[i][indexMaxDayTmeperature].main.temp);
-    showIconsNextThreeDays(i, threeNextDayWeatherDataArray[i][indexMaxDayTmeperature]);
+    showIconsNextDays(i, threeNextDayWeatherDataArray[i][indexMaxDayTmeperature]);
   }
 } 
 
-function showIconsNextThreeDays(i, threeNextDayWeatherDataArray) {
+function showIconsNextDays(i, threeNextDayWeatherDataArray) {
   const dayIcons = document.querySelectorAll('.weather-next-days_icons_img');
   
   dayIcons[i].src = `./images/animated/${threeNextDayWeatherDataArray.weather[0].icon}.svg`;
@@ -338,7 +347,7 @@ function showIconsNextThreeDays(i, threeNextDayWeatherDataArray) {
 async function getBackkgroundImage() {
   const response = await fetch('https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=76d735b7381e9ed633854a67b69d8387&tags=nature,weather,dark&tag_mode=all&extras=url_h&format=json&nojsoncallback=1');
   const images = await response.json();
-  console.log(images);
+  
   const item = images.photos.photo[Math.floor(Math.random() * images.photos.photo.length)].url_h;
   document.documentElement.style.background = `url(${item})`;
 }
@@ -358,7 +367,7 @@ function changeBackgroundHandly() {
 }
 
 function translateSearchForm() {
-  switch (LANG) {
+  switch (lang) {
     case 'ru':
       SEARCH_FIELD.setAttribute('placeholder','Город Район Область');
       SEARCH_BUTTON.innerHTML = 'поиск';
@@ -375,10 +384,10 @@ function translateSearchForm() {
   const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${CITY_NAME}&key=0f2efca19d1747cd906baa8bb7f8c2f7`);
   const coord = await response.json();
   
-  LATITUDE_CURRENT_CITY = coord.results[0].geometry.lat;
-  LONGITUDE_CURRENT_CITY = coord.results[0].geometry.lng;
+  latitudeCurrentCity = coord.results[0].geometry.lat;
+  longitudeCurrentCity = coord.results[0].geometry.lng;
 
-  setDAtaLocalStorage(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY, LANG, UNIT_DEGREE);
-  initMap(LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
-  getPlaceNameWeatherDataPlace(LANG, LATITUDE_CURRENT_CITY, LONGITUDE_CURRENT_CITY);
+  setDAtaLocalStorage(latitudeCurrentCity, longitudeCurrentCity, lang, unitDegree);
+  initMap(latitudeCurrentCity, longitudeCurrentCity);
+  getPlaceNameWeatherDataPlace(lang, latitudeCurrentCity, longitudeCurrentCity);
 }
