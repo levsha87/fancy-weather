@@ -4,14 +4,6 @@ const UNIT_FAHRENHEIT = 'imperial';
 const EN_LANGUAGE = 'en';
 const RU_LANGUAGE = 'ru';
 
-const searchField = document.querySelector('.search-field');
-const searchButton = document.querySelector('.search-button');
-let lang = localStorage.getItem('lang') || EN_LANGUAGE;
-let unitDegree = localStorage.getItem('unitDegree') || UNIT_CELSIUS;
-let cityName;
-let latitudeCurrentCity;
-let longitudeCurrentCity;
-
 const searchElementTranslate = {
   ru: {
     placeholder: 'Город Район Область',
@@ -28,15 +20,22 @@ function initWeatherApp () {
   const temperatureButtons = document.querySelector('.temperature-buttons');
   const mapContainer = document.querySelector('.user-location__geolocation');
 
+  const searchField = document.querySelector('.search-field');
+  const searchButton = document.querySelector('.search-button');
+
+  let lang = localStorage.getItem('lang') || EN_LANGUAGE;
+  let unitDegree = localStorage.getItem('unitDegree') || UNIT_CELSIUS;
+  let cityName;
+
   getBackkgroundImage();
   changeBackgroundHandly();
-  getCoordinateCurrentCityNavigator(mapContainer);
+  getCoordinateCurrentCityNavigator(mapContainer, lang, unitDegree, cityName, searchField, searchButton);
   setDefaultAttributeValueLanguageUnit(language, lang, unitDegree);
 
   temperatureButtons.addEventListener('change', (event) => changeTemperatureUnit(event) );
-  language.addEventListener('change', changeLanguage);
-  searchButton.addEventListener('click', getDataSearchForm);
-  searchField.addEventListener('keydown', (e) => getDataSearchFormPressEnter(mapContainer, e)); 
+  language.addEventListener('change',  () => changeLanguage(language, searchField,  searchButton, lang));
+  searchButton.addEventListener('click', ()=> getDataSearchForm(mapContainer, cityName));
+  searchField.addEventListener('keydown', (e) => getDataSearchFormPressEnter(mapContainer, e, cityName)); 
 }
 
 function setDefaultAttributeValueLanguageUnit(language, lang, unitDegree) {
@@ -85,42 +84,42 @@ if(item === 'temperature-celsius'){
   }
 }
 
-function changeLanguage(){
-  lang = this.value;
+function changeLanguage(language, searchField,  searchButton, lang){
+  lang = language.value;
   localStorage.setItem('lang', lang);
-  setSelectedLanguage(latitudeCurrentCity, longitudeCurrentCity);
+  setSelectedLanguage(latitudeCurrentCity, longitudeCurrentCity, searchField,  searchButton, lang);
 }
 
-function setSelectedLanguage (latitudeCurrentCity, longitudeCurrentCity) {
+function setSelectedLanguage (latitudeCurrentCity, longitudeCurrentCity, searchField,  searchButton, lang) {
   getDataLocalStorage();
   setInterval(() => {
     getCurrentFullTime(lang);
   }, 1000);
   
   getPlaceNameWeatherDataPlace(lang, latitudeCurrentCity, longitudeCurrentCity);
-  translateSearchForm();
+  translateSearchForm(searchField,  searchButton, lang);
 }
 
-function translateSearchForm() {
+function translateSearchForm(searchField,  searchButton, lang) {
   searchField.setAttribute('placeholder',`${searchElementTranslate[lang].placeholder}`);
   searchButton.innerHTML = `${searchElementTranslate[lang].search}`.toUpperCase();
 }
 
-function getDataSearchFormPressEnter(mapContainer, e){
+function getDataSearchFormPressEnter(mapContainer, e, cityName){
   if (e.keyCode === 13) {
     e.preventDefault();
-    getDataSearchForm(mapContainer);
+    getDataSearchForm(mapContainer, cityName);
   }
 }
 
-function getDataSearchForm(mapContainer){
+function getDataSearchForm(mapContainer, cityName){
   cityName = searchField.value;
   searchField.value ='';
   getCoordinateByPlaceName(mapContainer, cityName);
 }
 
 // Initialize and add the map
-function initMap(mapContainer, latitudeCurrentCity, longitudeCurrentCity) {
+function initMap(mapContainer, latitudeCurrentCity, longitudeCurrentCity, cityName) {
   const city = { lat: latitudeCurrentCity, lng: longitudeCurrentCity };
 
   const map = new mapboxgl.Map({
@@ -158,7 +157,6 @@ function getCurrentFullTime(lang) {
   showCurrentTime(dayToday, month, dateToday, timeNow);
 }
 
-
 function showCurrentTime(dayToday, month, dateToday, timeNow) {
   const monthElement = document.querySelector('.month');
   const dateTodayElement = document.querySelector('.date-today');
@@ -181,7 +179,7 @@ function showCurrentCountryNameCityName(currentCountry, currentTown) {
   cityNameElement.innerHTML = currentTown.toUpperCase();
 }
 
-function getCoordinateCurrentCityNavigator(mapContainer) {
+function getCoordinateCurrentCityNavigator(mapContainer, lang, unitDegree, cityName, searchField, searchButton) {
   navigator.geolocation.getCurrentPosition(success, error, {
     maximumAge: 60000,
     timeout: 5000,
@@ -193,29 +191,28 @@ function getCoordinateCurrentCityNavigator(mapContainer) {
     latitudeCurrentCity = +crd.latitude;
     longitudeCurrentCity = +crd.longitude;
 
-    initMap(mapContainer, latitudeCurrentCity, longitudeCurrentCity);
+    initMap(mapContainer, latitudeCurrentCity, longitudeCurrentCity, cityName);
     setDAtaLocalStorage(latitudeCurrentCity, longitudeCurrentCity, lang, unitDegree);
-    setSelectedLanguage (latitudeCurrentCity, longitudeCurrentCity);
+    setSelectedLanguage (latitudeCurrentCity, longitudeCurrentCity, searchField, searchButton, lang);
   }
 
   function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
-    getCoordinateIpAdress (mapContainer);
+    getCoordinateIpAdress (mapContainer, searchField, searchButton);
   } 
 }
 
-async function getCoordinateIpAdress (mapContainer) {
+async function getCoordinateIpAdress (mapContainer, searchField, searchButton) {
   const response = await fetch('https://ipinfo.io/json?token=543fd5d393e868');
     const place = await response.json();
-    console.log(place);
     [latitude, longitude] = place.loc.split(',');
     
     latitudeCurrentCity = +latitude;
     longitudeCurrentCity = +longitude;
 
-    initMap(mapContainer, latitudeCurrentCity, longitudeCurrentCity);
+    initMap(mapContainer, latitudeCurrentCity, longitudeCurrentCity, cityName);
     setDAtaLocalStorage(latitudeCurrentCity, longitudeCurrentCity, lang, unitDegree);
-    setSelectedLanguage (latitudeCurrentCity, longitudeCurrentCity);
+    setSelectedLanguage (latitudeCurrentCity, longitudeCurrentCity, searchField, searchButton, lang);
 }
 
 async function getPlaceNameWeatherDataPlace(lang, latitudeCurrentCity, longitudeCurrentCity){
@@ -393,7 +390,7 @@ function changeBackgroundHandly() {
   longitudeCurrentCity = coord.results[0].geometry.lng;
 
   setDAtaLocalStorage(latitudeCurrentCity, longitudeCurrentCity, lang, unitDegree);
-  initMap(mapContainer, latitudeCurrentCity, longitudeCurrentCity);
+  initMap(mapContainer, latitudeCurrentCity, longitudeCurrentCity, cityName);
   getPlaceNameWeatherDataPlace(lang, latitudeCurrentCity, longitudeCurrentCity);
 }
 
