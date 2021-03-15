@@ -92,10 +92,7 @@ function changeLanguage(language, searchField,  searchButton, lang){
 
 function setSelectedLanguage (latitudeCurrentCity, longitudeCurrentCity, searchField,  searchButton, lang) {
   getDataLocalStorage();
-  setInterval(() => {
-    getCurrentFullTime(lang);
-  }, 1000);
-  
+  getCurrentFullTime(lang);
   getPlaceNameWeatherDataPlace(lang, latitudeCurrentCity, longitudeCurrentCity);
   translateSearchForm(searchField,  searchButton, lang);
 }
@@ -153,8 +150,9 @@ function getCurrentFullTime(lang) {
     }).replace(/[.,\/#!$%\^&\*;{}=\-_`~()]/g,'').split(' ');
       break;
   }
-
-  showCurrentTime(dayToday, month, dateToday, timeNow);
+  setInterval(() => {
+    showCurrentTime(dayToday, month, dateToday, timeNow);
+  }, 1000);
 }
 
 function showCurrentTime(dayToday, month, dateToday, timeNow) {
