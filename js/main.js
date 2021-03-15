@@ -34,8 +34,8 @@ function initWeatherApp () {
 
   temperatureButtons.addEventListener('change', (event) => changeTemperatureUnit(event) );
   language.addEventListener('change',  () => changeLanguage(language, searchField,  searchButton, lang));
-  searchButton.addEventListener('click', ()=> getDataSearchForm(mapContainer, cityName));
-  searchField.addEventListener('keydown', (e) => getDataSearchFormPressEnter(mapContainer, e, cityName)); 
+  searchButton.addEventListener('click', ()=> getDataSearchForm(mapContainer, cityName, searchField));
+  searchField.addEventListener('keydown', (e) => getDataSearchFormPressEnter(mapContainer, e, cityName, searchField)); 
 }
 
 function setDefaultAttributeValueLanguageUnit(language, lang, unitDegree) {
@@ -102,14 +102,14 @@ function translateSearchForm(searchField,  searchButton, lang) {
   searchButton.innerHTML = `${searchElementTranslate[lang].search}`.toUpperCase();
 }
 
-function getDataSearchFormPressEnter(mapContainer, e, cityName){
+function getDataSearchFormPressEnter(mapContainer, e, cityName, searchField){
   if (e.keyCode === 13) {
     e.preventDefault();
-    getDataSearchForm(mapContainer, cityName);
+    getDataSearchForm(mapContainer, cityName, searchField);
   }
 }
 
-function getDataSearchForm(mapContainer, cityName){
+function getDataSearchForm(mapContainer, cityName, searchField){
   cityName = searchField.value;
   searchField.value ='';
   getCoordinateByPlaceName(mapContainer, cityName);
