@@ -120,8 +120,8 @@ function initMap(mapContainer, latitudeCurrentCity, longitudeCurrentCity, cityNa
   const city = { lat: latitudeCurrentCity, lng: longitudeCurrentCity };
 
   const map = new mapboxgl.Map({
-  container: mapContainer,
-  style: 'mapbox://styles/mapbox/streets-v11',
+  container: 'map',
+  style: 'mapbox://styles/mapbox/streets-v12',
   center: city, 
   zoom: 7
   });
