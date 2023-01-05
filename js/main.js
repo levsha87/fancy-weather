@@ -121,7 +121,7 @@ function initMap(mapContainer, latitudeCurrentCity, longitudeCurrentCity, cityNa
   mapboxgl.accessToken = 'pk.eyJ1Ijoicm1sZXZzaGEiLCJhIjoiY2tsYzJkYTh2MWRudTJ4bjByZDczcXpxOCJ9.a0ZsKhYLsJ6ogaUa3AnPAQ';
 
   const map = new mapboxgl.Map({
-  container: 'map',
+  container: mapContainer,
   style: 'mapbox://styles/mapbox/streets-v12',
   center: city, 
   zoom: 7
