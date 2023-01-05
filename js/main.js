@@ -118,6 +118,7 @@ function getDataSearchForm(mapContainer, cityName, searchField){
 // Initialize and add the map
 function initMap(mapContainer, latitudeCurrentCity, longitudeCurrentCity, cityName) {
   const city = { lat: latitudeCurrentCity, lng: longitudeCurrentCity };
+  mapboxgl.accessToken = 'pk.eyJ1Ijoicm1sZXZzaGEiLCJhIjoiY2tsYzJkYTh2MWRudTJ4bjByZDczcXpxOCJ9.a0ZsKhYLsJ6ogaUa3AnPAQ';
 
   const map = new mapboxgl.Map({
   container: 'map',
