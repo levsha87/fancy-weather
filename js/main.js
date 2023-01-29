@@ -364,7 +364,7 @@ async function getBackkgroundImage() {
   const images = await response.json();
   
   const item = images.photos.photo[Math.floor(Math.random() * images.photos.photo.length)].url_h;
-  document.documentElement.style.background = `url(${item})`;
+  document.documentElement.style.backgroundImage = `url(${item})`;
 }
 
 function changeBackgroundHandly() {
